@@ -1,5 +1,6 @@
 import 'package:cash_flow/screens/add_cash_in.dart';
 import 'package:cash_flow/screens/add_cash_out.dart';
+import 'package:cash_flow/screens/calculate_loan_amount.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -195,6 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.orange,
                 icon: Icons.trending_up,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -226,6 +228,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
+                    );
+                  },
+                  child: Text("Calculate Loan Amount"),
+                ),
               ),
             ],
           ),
