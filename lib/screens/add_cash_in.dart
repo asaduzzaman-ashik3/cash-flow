@@ -186,7 +186,7 @@ class _AddCashInState extends State<AddCashIn> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Row 1: Own Salary, Husband/Wife Salary
+              // Row 1: Own Salary, Spouse Salary
               Row(
                 children: [
                   Expanded(
@@ -194,63 +194,63 @@ class _AddCashInState extends State<AddCashIn> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Husband/Wife Salary', _husbandWifeSalaryController),
+                    child: _buildTextField('Spouse Salary', _husbandWifeSalaryController),
                   ),
                 ],
               ),
-              // Row 2: Son/Daughter Salary, Father/Mother Salary
+              // Row 2: Child Salary, Parent Salary
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Son/Daughter Salary', _sonDaughterSalaryController),
+                    child: _buildTextField('Child Salary', _sonDaughterSalaryController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Father/Mother Salary', _fatherMotherSalaryController),
+                    child: _buildTextField('Parent Salary', _fatherMotherSalaryController),
                   ),
                 ],
               ),
-              // Row 3: Savings Earn, Home Rent Earn
+              // Row 3: Savings Profit, House Rent
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Savings Earn', _savingsEarnController),
+                    child: _buildTextField('Savings Profit', _savingsEarnController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Home Rent Earn', _homeRentEarnController),
+                    child: _buildTextField('House Rent', _homeRentEarnController),
                   ),
                 ],
               ),
-              // Row 4: Business Earn, Agriculture Earn
+              // Row 4: Business Income, Agriculture Income
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Business Earn', _businessEarnController),
+                    child: _buildTextField('Business Income', _businessEarnController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Agriculture Earn', _agricultureEarnController),
+                    child: _buildTextField('Agriculture Income', _agricultureEarnController),
                   ),
                 ],
               ),
-              // Row 5: Animal Increasing Earn, Tree Sells Earn
+              // Row 5: Animal Rearing, Trees/Plants Sale
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Animal Increasing Earn', _animalIncreasingEarnController),
+                    child: _buildTextField('Animal Rearing', _animalIncreasingEarnController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Tree Sells Earn', _treeSellsEarnController),
+                    child: _buildTextField('Trees/Plants Sale', _treeSellsEarnController),
                   ),
                 ],
               ),
-              // Row 6: Fruit Sell Earn, Others
+              // Row 6: Fruits Sale, Others
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Fruit Sell Earn', _fruitSellEarnController),
+                    child: _buildTextField('Fruits Sale', _fruitSellEarnController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
