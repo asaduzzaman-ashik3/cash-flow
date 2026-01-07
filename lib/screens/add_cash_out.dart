@@ -9,25 +9,25 @@ class AddCashOut extends StatefulWidget {
 }
 
 class _AddCashOutState extends State<AddCashOut> {
-  final TextEditingController _foodGroceriesController = TextEditingController();
-  final TextEditingController _utilitiesController = TextEditingController();
-  final TextEditingController _rentMortgageController = TextEditingController();
-  final TextEditingController _transportationController = TextEditingController();
-  final TextEditingController _healthcareController = TextEditingController();
+  final TextEditingController _foodExpenseController = TextEditingController();
+  final TextEditingController _houseRentController = TextEditingController();
+  final TextEditingController _loanInstallmentController = TextEditingController();
+  final TextEditingController _dpsController = TextEditingController();
+  final TextEditingController _clothingPurchaseController = TextEditingController();
+  final TextEditingController _medicalController = TextEditingController();
   final TextEditingController _educationController = TextEditingController();
-  final TextEditingController _clothingController = TextEditingController();
-  final TextEditingController _entertainmentController = TextEditingController();
-  final TextEditingController _insuranceController = TextEditingController();
-  final TextEditingController _loanPaymentsController = TextEditingController();
-  final TextEditingController _homeMaintenanceController = TextEditingController();
-  final TextEditingController _personalCareController = TextEditingController();
-  final TextEditingController _communicationController = TextEditingController();
-  final TextEditingController _shoppingController = TextEditingController();
-  final TextEditingController _travelController = TextEditingController();
-  final TextEditingController _giftsDonationsController = TextEditingController();
-  final TextEditingController _taxesController = TextEditingController();
-  final TextEditingController _childcareController = TextEditingController();
-  final TextEditingController _petCareController = TextEditingController();
+  final TextEditingController _electricityBillController = TextEditingController();
+  final TextEditingController _fuelCostController = TextEditingController();
+  final TextEditingController _transportationCostController = TextEditingController();
+  final TextEditingController _mobileInternetBillController = TextEditingController();
+  final TextEditingController _houseRepairController = TextEditingController();
+  final TextEditingController _landTaxController = TextEditingController();
+  final TextEditingController _festivalExpenseController = TextEditingController();
+  final TextEditingController _dishBillController = TextEditingController();
+  final TextEditingController _generatorBillController = TextEditingController();
+  final TextEditingController _domesticWorkerSalaryController = TextEditingController();
+  final TextEditingController _serviceChargeController = TextEditingController();
+  final TextEditingController _garbageBillController = TextEditingController();
   final TextEditingController _othersController = TextEditingController();
 
   @override
@@ -41,25 +41,25 @@ class _AddCashOutState extends State<AddCashOut> {
       final prefs = await SharedPreferences.getInstance();
       if (mounted) {
         setState(() {
-          _foodGroceriesController.text = prefs.getString('expense_food_groceries') ?? '';
-          _utilitiesController.text = prefs.getString('expense_utilities') ?? '';
-          _rentMortgageController.text = prefs.getString('expense_rent_mortgage') ?? '';
-          _transportationController.text = prefs.getString('expense_transportation') ?? '';
-          _healthcareController.text = prefs.getString('expense_healthcare') ?? '';
+          _foodExpenseController.text = prefs.getString('expense_food') ?? '';
+          _houseRentController.text = prefs.getString('expense_house_rent') ?? '';
+          _loanInstallmentController.text = prefs.getString('expense_loan_installment') ?? '';
+          _dpsController.text = prefs.getString('expense_dps') ?? '';
+          _clothingPurchaseController.text = prefs.getString('expense_clothing_purchase') ?? '';
+          _medicalController.text = prefs.getString('expense_medical') ?? '';
           _educationController.text = prefs.getString('expense_education') ?? '';
-          _clothingController.text = prefs.getString('expense_clothing') ?? '';
-          _entertainmentController.text = prefs.getString('expense_entertainment') ?? '';
-          _insuranceController.text = prefs.getString('expense_insurance') ?? '';
-          _loanPaymentsController.text = prefs.getString('expense_loan_payments') ?? '';
-          _homeMaintenanceController.text = prefs.getString('expense_home_maintenance') ?? '';
-          _personalCareController.text = prefs.getString('expense_personal_care') ?? '';
-          _communicationController.text = prefs.getString('expense_communication') ?? '';
-          _shoppingController.text = prefs.getString('expense_shopping') ?? '';
-          _travelController.text = prefs.getString('expense_travel') ?? '';
-          _giftsDonationsController.text = prefs.getString('expense_gifts_donations') ?? '';
-          _taxesController.text = prefs.getString('expense_taxes') ?? '';
-          _childcareController.text = prefs.getString('expense_childcare') ?? '';
-          _petCareController.text = prefs.getString('expense_pet_care') ?? '';
+          _electricityBillController.text = prefs.getString('expense_electricity_bill') ?? '';
+          _fuelCostController.text = prefs.getString('expense_fuel_cost') ?? '';
+          _transportationCostController.text = prefs.getString('expense_transportation_cost') ?? '';
+          _mobileInternetBillController.text = prefs.getString('expense_mobile_internet_bill') ?? '';
+          _houseRepairController.text = prefs.getString('expense_house_repair') ?? '';
+          _landTaxController.text = prefs.getString('expense_land_tax') ?? '';
+          _festivalExpenseController.text = prefs.getString('expense_festival') ?? '';
+          _dishBillController.text = prefs.getString('expense_dish_bill') ?? '';
+          _generatorBillController.text = prefs.getString('expense_generator_bill') ?? '';
+          _domesticWorkerSalaryController.text = prefs.getString('expense_domestic_worker_salary') ?? '';
+          _serviceChargeController.text = prefs.getString('expense_service_charge') ?? '';
+          _garbageBillController.text = prefs.getString('expense_garbage_bill') ?? '';
           _othersController.text = prefs.getString('expense_others') ?? '';
         });
       }
@@ -81,25 +81,25 @@ class _AddCashOutState extends State<AddCashOut> {
       final prefs = await SharedPreferences.getInstance();
 
       final saveResults = await Future.wait([
-        prefs.setString('expense_food_groceries', _foodGroceriesController.text.trim()),
-        prefs.setString('expense_utilities', _utilitiesController.text.trim()),
-        prefs.setString('expense_rent_mortgage', _rentMortgageController.text.trim()),
-        prefs.setString('expense_transportation', _transportationController.text.trim()),
-        prefs.setString('expense_healthcare', _healthcareController.text.trim()),
+        prefs.setString('expense_food', _foodExpenseController.text.trim()),
+        prefs.setString('expense_house_rent', _houseRentController.text.trim()),
+        prefs.setString('expense_loan_installment', _loanInstallmentController.text.trim()),
+        prefs.setString('expense_dps', _dpsController.text.trim()),
+        prefs.setString('expense_clothing_purchase', _clothingPurchaseController.text.trim()),
+        prefs.setString('expense_medical', _medicalController.text.trim()),
         prefs.setString('expense_education', _educationController.text.trim()),
-        prefs.setString('expense_clothing', _clothingController.text.trim()),
-        prefs.setString('expense_entertainment', _entertainmentController.text.trim()),
-        prefs.setString('expense_insurance', _insuranceController.text.trim()),
-        prefs.setString('expense_loan_payments', _loanPaymentsController.text.trim()),
-        prefs.setString('expense_home_maintenance', _homeMaintenanceController.text.trim()),
-        prefs.setString('expense_personal_care', _personalCareController.text.trim()),
-        prefs.setString('expense_communication', _communicationController.text.trim()),
-        prefs.setString('expense_shopping', _shoppingController.text.trim()),
-        prefs.setString('expense_travel', _travelController.text.trim()),
-        prefs.setString('expense_gifts_donations', _giftsDonationsController.text.trim()),
-        prefs.setString('expense_taxes', _taxesController.text.trim()),
-        prefs.setString('expense_childcare', _childcareController.text.trim()),
-        prefs.setString('expense_pet_care', _petCareController.text.trim()),
+        prefs.setString('expense_electricity_bill', _electricityBillController.text.trim()),
+        prefs.setString('expense_fuel_cost', _fuelCostController.text.trim()),
+        prefs.setString('expense_transportation_cost', _transportationCostController.text.trim()),
+        prefs.setString('expense_mobile_internet_bill', _mobileInternetBillController.text.trim()),
+        prefs.setString('expense_house_repair', _houseRepairController.text.trim()),
+        prefs.setString('expense_land_tax', _landTaxController.text.trim()),
+        prefs.setString('expense_festival', _festivalExpenseController.text.trim()),
+        prefs.setString('expense_dish_bill', _dishBillController.text.trim()),
+        prefs.setString('expense_generator_bill', _generatorBillController.text.trim()),
+        prefs.setString('expense_domestic_worker_salary', _domesticWorkerSalaryController.text.trim()),
+        prefs.setString('expense_service_charge', _serviceChargeController.text.trim()),
+        prefs.setString('expense_garbage_bill', _garbageBillController.text.trim()),
         prefs.setString('expense_others', _othersController.text.trim()),
       ]);
 
@@ -138,49 +138,49 @@ class _AddCashOutState extends State<AddCashOut> {
   }
 
   Future<void> _resetValues() async {
-    _foodGroceriesController.clear();
-    _utilitiesController.clear();
-    _rentMortgageController.clear();
-    _transportationController.clear();
-    _healthcareController.clear();
+    _foodExpenseController.clear();
+    _houseRentController.clear();
+    _loanInstallmentController.clear();
+    _dpsController.clear();
+    _clothingPurchaseController.clear();
+    _medicalController.clear();
     _educationController.clear();
-    _clothingController.clear();
-    _entertainmentController.clear();
-    _insuranceController.clear();
-    _loanPaymentsController.clear();
-    _homeMaintenanceController.clear();
-    _personalCareController.clear();
-    _communicationController.clear();
-    _shoppingController.clear();
-    _travelController.clear();
-    _giftsDonationsController.clear();
-    _taxesController.clear();
-    _childcareController.clear();
-    _petCareController.clear();
+    _electricityBillController.clear();
+    _fuelCostController.clear();
+    _transportationCostController.clear();
+    _mobileInternetBillController.clear();
+    _houseRepairController.clear();
+    _landTaxController.clear();
+    _festivalExpenseController.clear();
+    _dishBillController.clear();
+    _generatorBillController.clear();
+    _domesticWorkerSalaryController.clear();
+    _serviceChargeController.clear();
+    _garbageBillController.clear();
     _othersController.clear();
   }
 
   @override
   void dispose() {
-    _foodGroceriesController.dispose();
-    _utilitiesController.dispose();
-    _rentMortgageController.dispose();
-    _transportationController.dispose();
-    _healthcareController.dispose();
+    _foodExpenseController.dispose();
+    _houseRentController.dispose();
+    _loanInstallmentController.dispose();
+    _dpsController.dispose();
+    _clothingPurchaseController.dispose();
+    _medicalController.dispose();
     _educationController.dispose();
-    _clothingController.dispose();
-    _entertainmentController.dispose();
-    _insuranceController.dispose();
-    _loanPaymentsController.dispose();
-    _homeMaintenanceController.dispose();
-    _personalCareController.dispose();
-    _communicationController.dispose();
-    _shoppingController.dispose();
-    _travelController.dispose();
-    _giftsDonationsController.dispose();
-    _taxesController.dispose();
-    _childcareController.dispose();
-    _petCareController.dispose();
+    _electricityBillController.dispose();
+    _fuelCostController.dispose();
+    _transportationCostController.dispose();
+    _mobileInternetBillController.dispose();
+    _houseRepairController.dispose();
+    _landTaxController.dispose();
+    _festivalExpenseController.dispose();
+    _dishBillController.dispose();
+    _generatorBillController.dispose();
+    _domesticWorkerSalaryController.dispose();
+    _serviceChargeController.dispose();
+    _garbageBillController.dispose();
     _othersController.dispose();
     super.dispose();
   }
@@ -221,119 +221,119 @@ class _AddCashOutState extends State<AddCashOut> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Row 1: Food & Groceries, Utilities
+              // Row 1: Food Expense, House Rent
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Food & Groceries', _foodGroceriesController),
+                    child: _buildTextField('Food Expense', _foodExpenseController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Utilities', _utilitiesController),
+                    child: _buildTextField('House Rent', _houseRentController),
                   ),
                 ],
               ),
-              // Row 2: Rent/Mortgage, Transportation
+              // Row 2: Loan Installment, DPS
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Rent/Mortgage', _rentMortgageController),
+                    child: _buildTextField('Loan Installment', _loanInstallmentController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Transportation', _transportationController),
+                    child: _buildTextField('DPS', _dpsController),
                   ),
                 ],
               ),
-              // Row 3: Healthcare, Education
+              // Row 3: Clothing Purchase, Medical
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Healthcare', _healthcareController),
+                    child: _buildTextField('Clothing Purchase', _clothingPurchaseController),
                   ),
                   const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildTextField('Medical', _medicalController),
+                  ),
+                ],
+              ),
+              // Row 4: Education, Electricity Bill
+              Row(
+                children: [
                   Expanded(
                     child: _buildTextField('Education', _educationController),
                   ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildTextField('Electricity Bill', _electricityBillController),
+                  ),
                 ],
               ),
-              // Row 4: Clothing, Entertainment
+              // Row 5: Fuel Cost, Transportation Cost
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Clothing', _clothingController),
+                    child: _buildTextField('Fuel Cost', _fuelCostController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Entertainment', _entertainmentController),
+                    child: _buildTextField('Transportation Cost', _transportationCostController),
                   ),
                 ],
               ),
-              // Row 5: Insurance, Loan Payments
+              // Row 6: Mobile & Internet Bill, House Repair
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Insurance', _insuranceController),
+                    child: _buildTextField('Mobile & Internet Bill', _mobileInternetBillController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Loan Payments', _loanPaymentsController),
+                    child: _buildTextField('House Repair', _houseRepairController),
                   ),
                 ],
               ),
-              // Row 6: Home Maintenance, Personal Care
+              // Row 7: Land Tax, Festival Expense
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Home Maintenance', _homeMaintenanceController),
+                    child: _buildTextField('Land Tax', _landTaxController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Personal Care', _personalCareController),
+                    child: _buildTextField('Festival Expense', _festivalExpenseController),
                   ),
                 ],
               ),
-              // Row 7: Communication, Shopping
+              // Row 8: Dish Bill, Generator Bill
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Communication', _communicationController),
+                    child: _buildTextField('Dish Bill', _dishBillController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Shopping', _shoppingController),
+                    child: _buildTextField('Generator Bill', _generatorBillController),
                   ),
                 ],
               ),
-              // Row 8: Travel, Gifts/Donations
+              // Row 9: Domestic Worker Salary, Service Charge
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Travel', _travelController),
+                    child: _buildTextField('Domestic Worker Salary', _domesticWorkerSalaryController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildTextField('Gifts/Donations', _giftsDonationsController),
+                    child: _buildTextField('Service Charge', _serviceChargeController),
                   ),
                 ],
               ),
-              // Row 9: Taxes, Childcare
+              // Row 10: Garbage Bill, Others
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField('Taxes', _taxesController),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _buildTextField('Childcare', _childcareController),
-                  ),
-                ],
-              ),
-              // Row 10: Pet Care, Others
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildTextField('Pet Care', _petCareController),
+                    child: _buildTextField('Garbage Bill', _garbageBillController),
                   ),
                   const SizedBox(width: 8),
                   Expanded(

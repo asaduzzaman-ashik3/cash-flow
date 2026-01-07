@@ -102,47 +102,46 @@ class _MyHomePageState extends State<MyHomePage> {
       final prefs = await SharedPreferences.getInstance();
       double total = 0.0;
 
-      // Get all 20 cash-out values and sum them
-      final foodGroceries = double.tryParse(prefs.getString('expense_food_groceries') ?? '') ?? 0.0;
-      final utilities = double.tryParse(prefs.getString('expense_utilities') ?? '') ?? 0.0;
-      final rentMortgage = double.tryParse(prefs.getString('expense_rent_mortgage') ?? '') ?? 0.0;
-      final transportation = double.tryParse(prefs.getString('expense_transportation') ?? '') ?? 0.0;
-      final healthcare = double.tryParse(prefs.getString('expense_healthcare') ?? '') ?? 0.0;
+      final food = double.tryParse(prefs.getString('expense_food') ?? '') ?? 0.0;
+      final houseRent = double.tryParse(prefs.getString('expense_house_rent') ?? '') ?? 0.0;
+      final loanInstallment = double.tryParse(prefs.getString('expense_loan_installment') ?? '') ?? 0.0;
+      final dps = double.tryParse(prefs.getString('expense_dps') ?? '') ?? 0.0;
+      final clothingPurchase = double.tryParse(prefs.getString('expense_clothing_purchase') ?? '') ?? 0.0;
+      final medical = double.tryParse(prefs.getString('expense_medical') ?? '') ?? 0.0;
       final education = double.tryParse(prefs.getString('expense_education') ?? '') ?? 0.0;
-      final clothing = double.tryParse(prefs.getString('expense_clothing') ?? '') ?? 0.0;
-      final entertainment = double.tryParse(prefs.getString('expense_entertainment') ?? '') ?? 0.0;
-      final insurance = double.tryParse(prefs.getString('expense_insurance') ?? '') ?? 0.0;
-      final loanPayments = double.tryParse(prefs.getString('expense_loan_payments') ?? '') ?? 0.0;
-      final homeMaintenance = double.tryParse(prefs.getString('expense_home_maintenance') ?? '') ?? 0.0;
-      final personalCare = double.tryParse(prefs.getString('expense_personal_care') ?? '') ?? 0.0;
-      final communication = double.tryParse(prefs.getString('expense_communication') ?? '') ?? 0.0;
-      final shopping = double.tryParse(prefs.getString('expense_shopping') ?? '') ?? 0.0;
-      final travel = double.tryParse(prefs.getString('expense_travel') ?? '') ?? 0.0;
-      final giftsDonations = double.tryParse(prefs.getString('expense_gifts_donations') ?? '') ?? 0.0;
-      final taxes = double.tryParse(prefs.getString('expense_taxes') ?? '') ?? 0.0;
-      final childcare = double.tryParse(prefs.getString('expense_childcare') ?? '') ?? 0.0;
-      final petCare = double.tryParse(prefs.getString('expense_pet_care') ?? '') ?? 0.0;
+      final electricityBill = double.tryParse(prefs.getString('expense_electricity_bill') ?? '') ?? 0.0;
+      final fuelCost = double.tryParse(prefs.getString('expense_fuel_cost') ?? '') ?? 0.0;
+      final transportationCost = double.tryParse(prefs.getString('expense_transportation_cost') ?? '') ?? 0.0;
+      final mobileInternetBill = double.tryParse(prefs.getString('expense_mobile_internet_bill') ?? '') ?? 0.0;
+      final houseRepair = double.tryParse(prefs.getString('expense_house_repair') ?? '') ?? 0.0;
+      final landTax = double.tryParse(prefs.getString('expense_land_tax') ?? '') ?? 0.0;
+      final festival = double.tryParse(prefs.getString('expense_festival') ?? '') ?? 0.0;
+      final dishBill = double.tryParse(prefs.getString('expense_dish_bill') ?? '') ?? 0.0;
+      final generatorBill = double.tryParse(prefs.getString('expense_generator_bill') ?? '') ?? 0.0;
+      final domesticWorkerSalary = double.tryParse(prefs.getString('expense_domestic_worker_salary') ?? '') ?? 0.0;
+      final serviceCharge = double.tryParse(prefs.getString('expense_service_charge') ?? '') ?? 0.0;
+      final garbageBill = double.tryParse(prefs.getString('expense_garbage_bill') ?? '') ?? 0.0;
       final others = double.tryParse(prefs.getString('expense_others') ?? '') ?? 0.0;
 
-      total = foodGroceries +
-          utilities +
-          rentMortgage +
-          transportation +
-          healthcare +
+      total = food +
+          houseRent +
+          loanInstallment +
+          dps +
+          clothingPurchase +
+          medical +
           education +
-          clothing +
-          entertainment +
-          insurance +
-          loanPayments +
-          homeMaintenance +
-          personalCare +
-          communication +
-          shopping +
-          travel +
-          giftsDonations +
-          taxes +
-          childcare +
-          petCare +
+          electricityBill +
+          fuelCost +
+          transportationCost +
+          mobileInternetBill +
+          houseRepair +
+          landTax +
+          festival +
+          dishBill +
+          generatorBill +
+          domesticWorkerSalary +
+          serviceCharge +
+          garbageBill +
           others;
 
       return total;
