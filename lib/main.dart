@@ -36,9 +36,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   String _totalEarn = "0";
   String _totalExpense = "0";
   String _netEarning = "0";
+  String _loanRepaymentCapacity = "0";
   String _loadAffordability = "0";
 
   @override
@@ -50,19 +52,36 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _loadAllTotals() async {
     final totalEarn = await _calculateTotalEarn();
     final totalExpense = await _calculateTotalExpense();
+
     final netEarning = totalEarn - totalExpense;
-    final loanAffordability = netEarning * 0.4;
+    final loanAffordability = netEarning * 0.5;
 
+    final prefs = await SharedPreferences.getInstance();
 
-    if (mounted) {
-      setState(() {
-        _totalEarn = _formatNumber(totalEarn);
-        _totalExpense = _formatNumber(totalExpense);
-        _netEarning = _formatNumber(netEarning);
-        _loadAffordability = _formatNumber(loanAffordability);
-      });
-    }
+    await prefs.setDouble('net_earning', netEarning);
+    await prefs.setDouble('loan_affordability', loanAffordability);
+
+    // Get calculated loan amount if available
+    final calculatedLoanAmount = prefs.getString('calculated_loan_amount');
+    final finalLoanAffordability = calculatedLoanAmount != null && 
+                                   calculatedLoanAmount.isNotEmpty && 
+                                   calculatedLoanAmount != '0'
+        ? double.tryParse(calculatedLoanAmount) ?? loanAffordability
+        : loanAffordability;
+
+    if (!mounted) return;
+
+    setState(() {
+      _totalEarn = _formatNumber(totalEarn);
+      _totalExpense = _formatNumber(totalExpense);
+      _netEarning = _formatNumber(netEarning);
+      _loanRepaymentCapacity = _formatNumber(loanAffordability);
+      _loadAffordability = _formatNumber(finalLoanAffordability);
+    });
   }
+
+
+
 
   Future<double> _calculateTotalEarn() async {
     try {
@@ -191,6 +210,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.trending_up,
               ),
               StatCard(
+                title: "Loan Repayment Capacity",
+                value: _loanRepaymentCapacity,
+                color: Colors.orange,
+                icon: Icons.trending_up,
+              ),
+              StatCard(
                 title: "Loan Affordability",
                 value: _loadAffordability,
                 color: Colors.orange,
@@ -233,10 +258,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
+                    // Ensure values are saved before navigating
+                    await _loadAllTotals();
                     await Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
                     );
+                    // Refresh to show calculated loan amount
+                    _loadAllTotals();
                   },
                   child: Text("Calculate Loan Amount"),
                 ),
