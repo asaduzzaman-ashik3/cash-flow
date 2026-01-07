@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String _totalExpense = "0";
   String _netEarning = "0";
   String _loanRepaymentCapacity = "0";
-  String _loadAffordability = "0";
 
   @override
   void initState() {
@@ -63,11 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Get calculated loan amount if available
     final calculatedLoanAmount = prefs.getString('calculated_loan_amount');
-    double? finalLoanAffordability;
-    if (calculatedLoanAmount != null && 
+    if (calculatedLoanAmount != null &&
         calculatedLoanAmount.isNotEmpty && 
         calculatedLoanAmount != '0') {
-      finalLoanAffordability = double.tryParse(calculatedLoanAmount);
     }
 
     if (!mounted) return;
@@ -78,9 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
       _loanRepaymentCapacity = loanRepaymentCapacity > 0 
           ? _formatNumber(loanRepaymentCapacity)
-          : "Not Available";
-      _loadAffordability = finalLoanAffordability != null && finalLoanAffordability > 0
-          ? _formatNumber(finalLoanAffordability)
           : "Not Available";
     });
   }
@@ -220,13 +214,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.orange,
                 icon: Icons.trending_up,
               ),
-              StatCard(
-                title: "Loan Affordability",
-                value: _loadAffordability,
-                color: Colors.orange,
-                icon: Icons.trending_up,
-              ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
