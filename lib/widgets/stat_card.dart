@@ -58,13 +58,14 @@ class StatCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                value,
+                (value.isNotEmpty) ? value : "Not Available",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: color ?? Colors.black,
                 ),
               ),
+
             ],
           ),
         ],
