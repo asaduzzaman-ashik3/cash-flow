@@ -45,7 +45,26 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Padding(padding: EdgeInsets.all(20),child: Column(
           children: [
-
+            StatCard(
+              title: "Total Earn",
+              value: "\$5,200",
+              color: Colors.green,
+              icon: Icons.attach_money,
+            ),
+            SizedBox(width: 12),
+            StatCard(
+              title: "Total Expense",
+              value: "\$2,300",
+              color: Colors.red,
+              icon: Icons.money_off,
+            ),
+            SizedBox(width: 12),
+            StatCard(
+              title: "Net Earning",
+              value: "\$2,900",
+              color: Colors.orange,
+              icon: Icons.trending_up,
+            )
 
           ],
         ),),
