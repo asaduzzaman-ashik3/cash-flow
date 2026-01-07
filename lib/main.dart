@@ -1,4 +1,6 @@
+import 'package:cash_flow/screens/add_cash_in.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/stat_card.dart';
 
@@ -32,6 +34,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _totalEarn = "0";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTotalEarn();
+  }
+
+  Future<void> _loadTotalEarn() async {
+    final total = await _calculateTotalEarn();
+    if (mounted) {
+      setState(() {
+        _totalEarn = _formatNumber(total);
+      });
+    }
+  }
+
+  Future<double> _calculateTotalEarn() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      double total = 0.0;
+
+      // Get all 12 cash-in values and sum them
+      final ownSalary = double.tryParse(prefs.getString('own_salary') ?? '') ?? 0.0;
+      final husbandWifeSalary = double.tryParse(prefs.getString('husband_wife_salary') ?? '') ?? 0.0;
+      final sonDaughterSalary = double.tryParse(prefs.getString('son_daughter_salary') ?? '') ?? 0.0;
+      final fatherMotherSalary = double.tryParse(prefs.getString('father_mother_salary') ?? '') ?? 0.0;
+      final savingsEarn = double.tryParse(prefs.getString('savings_earn') ?? '') ?? 0.0;
+      final homeRentEarn = double.tryParse(prefs.getString('home_rent_earn') ?? '') ?? 0.0;
+      final businessEarn = double.tryParse(prefs.getString('business_earn') ?? '') ?? 0.0;
+      final agricultureEarn = double.tryParse(prefs.getString('agriculture_earn') ?? '') ?? 0.0;
+      final animalIncreasingEarn = double.tryParse(prefs.getString('animal_increasing_earn') ?? '') ?? 0.0;
+      final treeSellsEarn = double.tryParse(prefs.getString('tree_sells_earn') ?? '') ?? 0.0;
+      final fruitSellEarn = double.tryParse(prefs.getString('fruit_sell_earn') ?? '') ?? 0.0;
+      final others = double.tryParse(prefs.getString('others') ?? '') ?? 0.0;
+
+      total = ownSalary +
+          husbandWifeSalary +
+          sonDaughterSalary +
+          fatherMotherSalary +
+          savingsEarn +
+          homeRentEarn +
+          businessEarn +
+          agricultureEarn +
+          animalIncreasingEarn +
+          treeSellsEarn +
+          fruitSellEarn +
+          others;
+
+      return total;
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
+  String _formatNumber(double number) {
+    return number.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               StatCard(
                 title: "Total Earn",
-                value: "5,200",
+                value: _totalEarn,
                 color: Colors.green,
                 icon: Icons.attach_money,
               ),
@@ -61,14 +125,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.trending_up,
               ),
               Row(
-                spacing: 10,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: (){}, child: Text("Add Cash In Flow"))),
-                  Expanded(child: ElevatedButton(onPressed: (){}, child: Text("Add Cash Out Flow")))
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddCashIn()),
+                        );
+                        // Refresh total earn when returning from AddCashIn
+                        _loadTotalEarn();
+                      },
+                      child: Text("Add Cash In Flow"),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Add Cash Out Flow"),
+                    ),
+                  ),
                 ],
-              )
-
+              ),
             ],
           ),
         ),
