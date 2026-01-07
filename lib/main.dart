@@ -54,29 +54,34 @@ class _MyHomePageState extends State<MyHomePage> {
     final totalExpense = await _calculateTotalExpense();
 
     final netEarning = totalEarn - totalExpense;
-    final loanAffordability = netEarning * 0.5;
+    final loanRepaymentCapacity = netEarning * 0.5;
 
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setDouble('net_earning', netEarning);
-    await prefs.setDouble('loan_affordability', loanAffordability);
+    await prefs.setDouble('loan_affordability', loanRepaymentCapacity); // Save as E value
 
     // Get calculated loan amount if available
     final calculatedLoanAmount = prefs.getString('calculated_loan_amount');
-    final finalLoanAffordability = calculatedLoanAmount != null && 
-                                   calculatedLoanAmount.isNotEmpty && 
-                                   calculatedLoanAmount != '0'
-        ? double.tryParse(calculatedLoanAmount) ?? loanAffordability
-        : loanAffordability;
+    double? finalLoanAffordability;
+    if (calculatedLoanAmount != null && 
+        calculatedLoanAmount.isNotEmpty && 
+        calculatedLoanAmount != '0') {
+      finalLoanAffordability = double.tryParse(calculatedLoanAmount);
+    }
 
     if (!mounted) return;
 
     setState(() {
-      _totalEarn = _formatNumber(totalEarn);
-      _totalExpense = _formatNumber(totalExpense);
-      _netEarning = _formatNumber(netEarning);
-      _loanRepaymentCapacity = _formatNumber(loanAffordability);
-      _loadAffordability = _formatNumber(finalLoanAffordability);
+      _totalEarn = totalEarn > 0 ? _formatNumber(totalEarn) : "Not Available";
+      _totalExpense = totalExpense > 0 ? _formatNumber(totalExpense) : "Not Available";
+      _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
+      _loanRepaymentCapacity = loanRepaymentCapacity > 0 
+          ? _formatNumber(loanRepaymentCapacity)
+          : "Not Available";
+      _loadAffordability = finalLoanAffordability != null && finalLoanAffordability > 0
+          ? _formatNumber(finalLoanAffordability)
+          : "Not Available";
     });
   }
 

@@ -60,8 +60,8 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
       }
 
       setState(() {
-        _netEarning = _formatNumber(netEarning);
-        _loadAffordability = _formatNumber(loanAffordability);
+        _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
+        _loadAffordability = loanAffordability > 0 ? _formatNumber(loanAffordability) : "Not Available";
         _selectedLoanTermMonths = validatedN;
         _calculatedLoanAmount = savedCalculatedAmount ?? '0';
         
@@ -222,7 +222,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '৳ $_netEarning',
+                      _netEarning != "Not Available" ? '৳ $_netEarning' : _netEarning,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '৳ $_loadAffordability',
+                      _loadAffordability != "Not Available" ? '৳ $_loadAffordability' : _loadAffordability,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -340,14 +340,18 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               const SizedBox(height: 20),
               
               // Calculated Loan Amount Display
-              if (_selectedLoanTermMonths != null && _calculatedLoanAmount != "0")
+              if (_selectedLoanTermMonths != null)
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.green[50],
+                    color: _calculatedLoanAmount != "0" ? Colors.green[50] : Colors.grey[100],
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.green[300]!),
+                    border: Border.all(
+                      color: _calculatedLoanAmount != "0" 
+                          ? Colors.green[300]! 
+                          : Colors.grey[300]!,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,11 +365,15 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '৳ $_calculatedLoanAmount',
-                        style: const TextStyle(
+                        _calculatedLoanAmount != "0" 
+                            ? '৳ $_calculatedLoanAmount'
+                            : 'Not Available',
+                        style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: _calculatedLoanAmount != "0" 
+                              ? Colors.green 
+                              : Colors.grey,
                         ),
                       ),
                     ],
