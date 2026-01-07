@@ -1,4 +1,5 @@
 import 'package:cash_flow/screens/add_cash_in.dart';
+import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,18 +36,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _totalEarn = "0";
+  String _totalExpense = "0";
+  String _netEarning = "0";
 
   @override
   void initState() {
     super.initState();
-    _loadTotalEarn();
+    _loadAllTotals();
   }
 
-  Future<void> _loadTotalEarn() async {
-    final total = await _calculateTotalEarn();
+  Future<void> _loadAllTotals() async {
+    final totalEarn = await _calculateTotalEarn();
+    final totalExpense = await _calculateTotalExpense();
+    final netEarning = totalEarn - totalExpense;
+    
     if (mounted) {
       setState(() {
-        _totalEarn = _formatNumber(total);
+        _totalEarn = _formatNumber(totalEarn);
+        _totalExpense = _formatNumber(totalExpense);
+        _netEarning = _formatNumber(netEarning);
       });
     }
   }
@@ -89,6 +97,60 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<double> _calculateTotalExpense() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      double total = 0.0;
+
+      // Get all 20 cash-out values and sum them
+      final foodGroceries = double.tryParse(prefs.getString('expense_food_groceries') ?? '') ?? 0.0;
+      final utilities = double.tryParse(prefs.getString('expense_utilities') ?? '') ?? 0.0;
+      final rentMortgage = double.tryParse(prefs.getString('expense_rent_mortgage') ?? '') ?? 0.0;
+      final transportation = double.tryParse(prefs.getString('expense_transportation') ?? '') ?? 0.0;
+      final healthcare = double.tryParse(prefs.getString('expense_healthcare') ?? '') ?? 0.0;
+      final education = double.tryParse(prefs.getString('expense_education') ?? '') ?? 0.0;
+      final clothing = double.tryParse(prefs.getString('expense_clothing') ?? '') ?? 0.0;
+      final entertainment = double.tryParse(prefs.getString('expense_entertainment') ?? '') ?? 0.0;
+      final insurance = double.tryParse(prefs.getString('expense_insurance') ?? '') ?? 0.0;
+      final loanPayments = double.tryParse(prefs.getString('expense_loan_payments') ?? '') ?? 0.0;
+      final homeMaintenance = double.tryParse(prefs.getString('expense_home_maintenance') ?? '') ?? 0.0;
+      final personalCare = double.tryParse(prefs.getString('expense_personal_care') ?? '') ?? 0.0;
+      final communication = double.tryParse(prefs.getString('expense_communication') ?? '') ?? 0.0;
+      final shopping = double.tryParse(prefs.getString('expense_shopping') ?? '') ?? 0.0;
+      final travel = double.tryParse(prefs.getString('expense_travel') ?? '') ?? 0.0;
+      final giftsDonations = double.tryParse(prefs.getString('expense_gifts_donations') ?? '') ?? 0.0;
+      final taxes = double.tryParse(prefs.getString('expense_taxes') ?? '') ?? 0.0;
+      final childcare = double.tryParse(prefs.getString('expense_childcare') ?? '') ?? 0.0;
+      final petCare = double.tryParse(prefs.getString('expense_pet_care') ?? '') ?? 0.0;
+      final others = double.tryParse(prefs.getString('expense_others') ?? '') ?? 0.0;
+
+      total = foodGroceries +
+          utilities +
+          rentMortgage +
+          transportation +
+          healthcare +
+          education +
+          clothing +
+          entertainment +
+          insurance +
+          loanPayments +
+          homeMaintenance +
+          personalCare +
+          communication +
+          shopping +
+          travel +
+          giftsDonations +
+          taxes +
+          childcare +
+          petCare +
+          others;
+
+      return total;
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
   String _formatNumber(double number) {
     return number.toStringAsFixed(0).replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
@@ -114,13 +176,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               StatCard(
                 title: "Total Expense",
-                value: "2,300",
+                value: _totalExpense,
                 color: Colors.red,
                 icon: Icons.money_off,
               ),
               StatCard(
                 title: "Net Earning",
-                value: "2,900",
+                value: _netEarning,
                 color: Colors.orange,
                 icon: Icons.trending_up,
               ),
@@ -134,8 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(builder: (context) => AddCashIn()),
                         );
-                        // Refresh total earn when returning from AddCashIn
-                        _loadTotalEarn();
+                        // Refresh all totals when returning from AddCashIn
+                        _loadAllTotals();
                       },
                       child: Text("Add Cash In Flow"),
                     ),
@@ -143,7 +205,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddCashOut()),
+                        );
+                        // Refresh totals when returning from AddCashOut
+                        _loadAllTotals();
+                      },
                       child: Text("Add Cash Out Flow"),
                     ),
                   ),
