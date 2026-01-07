@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _totalEarn = "0";
   String _totalExpense = "0";
   String _netEarning = "0";
+  String _loadAffordability = "0";
 
   @override
   void initState() {
@@ -49,12 +50,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final totalEarn = await _calculateTotalEarn();
     final totalExpense = await _calculateTotalExpense();
     final netEarning = totalEarn - totalExpense;
-    
+    final loanAffordability = netEarning * 0.4;
+
+
     if (mounted) {
       setState(() {
         _totalEarn = _formatNumber(totalEarn);
         _totalExpense = _formatNumber(totalExpense);
         _netEarning = _formatNumber(netEarning);
+        _loadAffordability = _formatNumber(loanAffordability);
       });
     }
   }
@@ -182,6 +186,12 @@ class _MyHomePageState extends State<MyHomePage> {
               StatCard(
                 title: "Net Earning",
                 value: _netEarning,
+                color: Colors.orange,
+                icon: Icons.trending_up,
+              ),
+              StatCard(
+                title: "Loan Affordability",
+                value: _loadAffordability,
                 color: Colors.orange,
                 icon: Icons.trending_up,
               ),
