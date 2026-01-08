@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCashIn extends StatefulWidget {
@@ -190,14 +191,18 @@ class _AddCashInState extends State<AddCashIn> {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
       child: SizedBox(
         child: TextField(
+
           controller: controller,
           keyboardType: TextInputType.number,
+          inputFormatters:  [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            hintText: "Amount",
+            hintText: "৳ Amount",
             hintStyle: TextStyle(fontSize: 12),
             labelStyle: TextStyle(fontSize: 13),
             filled: true,

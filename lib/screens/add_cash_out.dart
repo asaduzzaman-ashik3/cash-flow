@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+
 
 class AddCashOut extends StatefulWidget {
   const AddCashOut({super.key});
@@ -192,14 +194,17 @@ class _AddCashOutState extends State<AddCashOut> {
         child: TextField(
           controller: controller,
           keyboardType: TextInputType.number,
+          inputFormatters:  [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           decoration: InputDecoration(
             labelText: label,
-            hintStyle: TextStyle(fontSize: 13),
-            labelStyle: TextStyle(fontSize: 13),
+            hintText: "৳ Amount",
+            hintStyle: const TextStyle(fontSize: 13),
+            labelStyle: const TextStyle(fontSize: 13),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            hintText: "Amount",
             filled: true,
             fillColor: Colors.grey[50],
             contentPadding: const EdgeInsets.symmetric(
@@ -207,7 +212,8 @@ class _AddCashOutState extends State<AddCashOut> {
               horizontal: 12,
             ),
           ),
-        ),
+        )
+
       ),
     );
   }

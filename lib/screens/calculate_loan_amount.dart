@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalculateLoanAmount extends StatefulWidget {
@@ -272,6 +273,9 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               TextField(
                 controller: _loanTermController,
                 keyboardType: TextInputType.number,
+                inputFormatters:  [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 decoration: InputDecoration(
                   labelText: 'Loan Term (N) - Months',
                   hintText: 'Enter loan term in months',
@@ -293,6 +297,9 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               TextField(
                 controller: _numberOfInstallmentsController,
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 decoration: InputDecoration(
                   labelText: 'Number of Installments (n)',
                   hintText: 'Enter number of installments',
@@ -319,11 +326,13 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 onChanged: (_) => _calculateLoanAmount(),
               ),
               const SizedBox(height: 12),
-              
-              // Yearly Interest Rate Input Field
+
               TextField(
-                controller: _yearlyInterestRateController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                controller: _yearlyInterestRateController,
                 decoration: InputDecoration(
                   labelText: 'Yearly Interest Rate (r) %',
                   hintText: 'Enter yearly interest rate (e.g., 1.2)',
