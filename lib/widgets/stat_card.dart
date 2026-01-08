@@ -58,13 +58,16 @@ class StatCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                value,
+                (value.isNotEmpty && value != "0" && value != "0,")
+                    ? "৳ $value"
+                    : "Not Added",
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+
                   color: color ?? Colors.black,
                 ),
               ),
+
             ],
           ),
         ],
