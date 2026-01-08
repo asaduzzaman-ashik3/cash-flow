@@ -1,6 +1,7 @@
 import 'package:cash_flow/screens/add_cash_in.dart';
 import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:cash_flow/screens/calculate_loan_amount.dart';
+import 'package:cash_flow/screens/cash_in_flow_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final totalExpense = await _calculateTotalExpense();
 
     final netEarning = totalEarn - totalExpense;
-    final loanRepaymentCapacity = netEarning * 0.5;
+    final loanRepaymentCapacity = netEarning * 0.4;
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -190,11 +191,21 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             spacing: 12,
             children: [
-              StatCard(
-                title: "Total Earn",
-                value: _totalEarn,
-                color: Colors.green,
-                icon: Icons.attach_money,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CashInFlowDetails(),
+                    ),
+                  );
+                },
+                child: StatCard(
+                  title: "Total Earn",
+                  value: _totalEarn,
+                  color: Colors.green,
+                  icon: Icons.attach_money,
+                ),
               ),
               StatCard(
                 title: "Total Expense",
