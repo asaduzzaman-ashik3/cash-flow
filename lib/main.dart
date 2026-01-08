@@ -243,7 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 StatCard(
                   title: "Loan Repayment Capacity",
                   value: _loanRepaymentCapacity,
-                  color: Colors.orange,
+                  color: Colors.blue,
                   icon: Icons.trending_up,
                 ),
                 Row(
