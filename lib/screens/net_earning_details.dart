@@ -180,18 +180,15 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
       children: [
         // Section Title
         Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: 6),
           child: Text(
             title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-
             ),
           ),
         ),
-        
-        // Table Header
         Container(
           decoration: BoxDecoration(
             color: Colors.green.shade50,
@@ -239,8 +236,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
             ],
           ),
         ),
-        
-        // Table Body
+
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -288,8 +284,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
             }).toList(),
           ),
         ),
-        
-        // Total Row
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -362,7 +356,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                 totalColor: Colors.green,
               ),
               
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               
               // Cash Out Table
               _buildTable(
@@ -373,7 +367,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                 totalColor: Colors.red,
               ),
               
-              const SizedBox(height: 32),
+              const SizedBox(height: 12),
               
               // Net Earning Summary
               Container(
