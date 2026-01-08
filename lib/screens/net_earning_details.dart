@@ -35,8 +35,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
   Future<void> _loadData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
-      // Load Cash In Data
+
       final ownSalary = prefs.getString('own_salary') ?? '';
       final spouseSalary = prefs.getString('husband_wife_salary') ?? '';
       final childSalary = prefs.getString('son_daughter_salary') ?? '';
@@ -61,7 +60,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
         }
       }
 
-      // Calculate Cash In Total
       double totalCashIn = 0.0;
       totalCashIn += double.tryParse(ownSalary) ?? 0.0;
       totalCashIn += double.tryParse(spouseSalary) ?? 0.0;
@@ -81,7 +79,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
         totalCashIn += double.tryParse(value) ?? 0.0;
       }
 
-      // Load Cash Out Data
       final food = prefs.getString('expense_food') ?? '';
       final houseRentExpense = prefs.getString('expense_house_rent') ?? '';
       final loanInstallment = prefs.getString('expense_loan_installment') ?? '';
@@ -103,7 +100,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
       final garbageBill = prefs.getString('expense_garbage_bill') ?? '';
       final othersExpense = prefs.getString('expense_others') ?? '';
 
-      // Calculate Cash Out Total
       double totalCashOut = 0.0;
       totalCashOut += double.tryParse(food) ?? 0.0;
       totalCashOut += double.tryParse(houseRentExpense) ?? 0.0;
@@ -126,7 +122,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
       totalCashOut += double.tryParse(garbageBill) ?? 0.0;
       totalCashOut += double.tryParse(othersExpense) ?? 0.0;
 
-      // Calculate Net Earning
       final netEarning = totalCashIn - totalCashOut;
 
       if (mounted) {
@@ -144,7 +139,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
             'Trees/Plants Sale': treesPlantsSale,
             'Fruits Sale': fruitsSale,
             'Others': others,
-            ...dynamicFields, // Add all dynamic fields
+            ...dynamicFields,
           };
           
           _cashOutData = {
@@ -355,8 +350,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                   ),
                   
                   pw.SizedBox(width: 10),
-                  
-                  // Right Column - Cash Out Flow
+
                   pw.Expanded(
                     child: pw.Container(
                       decoration: pw.BoxDecoration(

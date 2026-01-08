@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final totalExpense = await _calculateTotalExpense();
 
     final netEarning = totalEarn - totalExpense;
-    final loanRepaymentCapacity = netEarning * 0.5;
+    final loanRepaymentCapacity = netEarning * 0.4;
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -236,7 +236,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             MaterialPageRoute(builder: (context) => AddCashIn()),
                           );
-                          // Refresh all totals when returning from AddCashIn
                           _loadAllTotals();
                         },
                         child: Center(
@@ -263,7 +262,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             MaterialPageRoute(builder: (context) => AddCashOut()),
                           );
-                          // Refresh totals when returning from AddCashOut
                           _loadAllTotals();
                         },
                         child: Center(
@@ -411,7 +409,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Ensure values are saved before navigating
                       await _loadAllTotals();
                       await Navigator.push(
                         context,
