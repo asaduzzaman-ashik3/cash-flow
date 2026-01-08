@@ -183,9 +183,9 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Colors.teal[50],
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue[200]!),
+                  border: Border.all(color: Colors.teal[200]!),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +217,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               
               // Net Earning Display
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all( 12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
@@ -228,12 +228,12 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   children: [
                     const Text(
                       'Net Earning:',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14),
                     ),
                     Text(
                       _netEarning != "Not Available" ? '৳ $_netEarning' : _netEarning,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -244,7 +244,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               
               // Loan Repayment Capacity (E) Display
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
@@ -255,12 +255,12 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   children: [
                     const Text(
                       'Loan Repayment Capacity (E):',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14),
                     ),
                     Text(
                       _loadAffordability != "Not Available" ? '৳ $_loadAffordability' : _loadAffordability,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -355,11 +355,11 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: _calculatedLoanAmount != "0" ? Colors.green[50] : Colors.grey[100],
+                    color: _calculatedLoanAmount != "0" ? Colors.teal[50] : Colors.grey[100],
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: _calculatedLoanAmount != "0" 
-                          ? Colors.green[300]! 
+                          ? Colors.teal[300]!
                           : Colors.grey[300]!,
                     ),
                   ),
@@ -382,7 +382,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: _calculatedLoanAmount != "0" 
-                              ? Colors.green 
+                              ? Colors.teal
                               : Colors.grey,
                         ),
                       ),
