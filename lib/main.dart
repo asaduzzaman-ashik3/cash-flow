@@ -197,53 +197,28 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               spacing: 12,
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CashInFlowDetails(),
-                      ),
-                    );
-                  },
-                  child: StatCard(
-                    title: "Total Earn",
-                    value: _totalEarn,
-                    color: Colors.green,
-                    icon: Icons.trending_up_outlined,
-                  ),
+                StatCard(
+                  title: "Total Earn",
+                  value: _totalEarn,
+                  color: Colors.green,
+                  icon: Icons.trending_up_outlined,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CashOutFlowDetails(),
-                      ),
-                    );
-                  },
-                  child: StatCard(
-                    title: "Total Expense",
-                    value: _totalExpense,
-                    color: Colors.red,
-                    icon: Icons.trending_down_outlined,
-                  ),
+                StatCard(
+                  title: "Total Expense",
+                  value: _totalExpense,
+                  color: Colors.red,
+                  icon: Icons.trending_down_outlined,
                 ),
-                InkWell(
-                  child: StatCard(
-                    title: "Net Earning",
-                    value: _netEarning,
-                    color: Colors.orange,
-                    icon: Icons.account_balance_wallet_outlined,
-                  ),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
-                  },
+                StatCard(
+                  title: "Net Earning",
+                  value: _netEarning,
+                  color: Colors.orange,
+                  icon: Icons.account_balance_wallet_outlined,
                 ),
                 StatCard(
                   title: "Loan Repayment Capacity",
                   value: _loanRepaymentCapacity,
-                  color: Colors.blue,
+                  color: Colors.cyan,
                   icon: Icons.payments_outlined,
                 ),
                 SizedBox(height: 10,),
@@ -412,7 +387,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             MaterialPageRoute(builder: (context) => AddCashIn()),
                           );
-                          // Refresh all totals when returning from AddCashIn
                           _loadAllTotals();
                         },
                         child: Text("Add Cash In Flow"),
@@ -426,7 +400,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             MaterialPageRoute(builder: (context) => AddCashOut()),
                           );
-                          // Refresh totals when returning from AddCashOut
                           _loadAllTotals();
                         },
                         child: Text("Add Cash Out Flow"),
