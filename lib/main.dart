@@ -2,6 +2,7 @@ import 'package:cash_flow/screens/add_cash_in.dart';
 import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:cash_flow/screens/calculate_loan_amount.dart';
 import 'package:cash_flow/screens/cash_in_flow_details.dart';
+import 'package:cash_flow/screens/cash_out_flow_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -207,11 +208,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icons.attach_money,
                 ),
               ),
-              StatCard(
-                title: "Total Expense",
-                value: _totalExpense,
-                color: Colors.red,
-                icon: Icons.money_off,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CashOutFlowDetails(),
+                    ),
+                  );
+                },
+                child: StatCard(
+                  title: "Total Expense",
+                  value: _totalExpense,
+                  color: Colors.red,
+                  icon: Icons.money_off,
+                ),
               ),
               StatCard(
                 title: "Net Earning",
