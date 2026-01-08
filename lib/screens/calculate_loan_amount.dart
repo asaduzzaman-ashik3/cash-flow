@@ -326,13 +326,14 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 onChanged: (_) => _calculateLoanAmount(),
               ),
               const SizedBox(height: 12),
-
               TextField(
+                controller: _yearlyInterestRateController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d*\.?\d*'),
+                  ),
                 ],
-                controller: _yearlyInterestRateController,
                 decoration: InputDecoration(
                   labelText: 'Yearly Interest Rate (r) %',
                   hintText: 'Enter yearly interest rate (e.g., 1.2)',
