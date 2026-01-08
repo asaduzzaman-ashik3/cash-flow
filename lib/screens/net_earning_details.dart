@@ -653,7 +653,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                   label: const Text('View PDF'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -686,9 +686,9 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.orange[50],
+                  color: Colors.teal[50],
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.orange[300]!),
+                  border: Border.all(color: Colors.teal[300]!),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -698,7 +698,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.orange[900],
+                        color: Colors.teal[900],
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -738,7 +738,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.red[900],
+                            color: Colors.teal[900],
                           ),
                         ),
                       ],
@@ -752,7 +752,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.orange[900],
+                            color: Colors.teal[900],
                           ),
                         ),
                         Text(
@@ -760,7 +760,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.orange[900],
+                            color: Colors.teal[900],
                           ),
                         ),
                       ],

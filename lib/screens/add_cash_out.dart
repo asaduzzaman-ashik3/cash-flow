@@ -194,6 +194,8 @@ class _AddCashOutState extends State<AddCashOut> {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             labelText: label,
+            hintStyle: TextStyle(fontSize: 13),
+            labelStyle: TextStyle(fontSize: 13),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -341,7 +343,7 @@ class _AddCashOutState extends State<AddCashOut> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               Row(
                 children: [
@@ -349,8 +351,8 @@ class _AddCashOutState extends State<AddCashOut> {
                     child: ElevatedButton(
                       onPressed: _resetValues,
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.grey[600],
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        backgroundColor: Colors.orangeAccent,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
@@ -358,7 +360,7 @@ class _AddCashOutState extends State<AddCashOut> {
                       ),
                       child: const Text(
                         'Reset',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 14),
                       ),
                     ),
                   ),
@@ -367,14 +369,16 @@ class _AddCashOutState extends State<AddCashOut> {
                     child: ElevatedButton(
                       onPressed: _saveValues,
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
                       child: const Text(
                         'Save',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 14),
                       ),
                     ),
                   ),

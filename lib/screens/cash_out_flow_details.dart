@@ -272,7 +272,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                   label: const Text('View PDF'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -281,7 +281,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
               // Table Header
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.red[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -307,7 +307,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.red[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -319,7 +319,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.red[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -381,7 +381,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
               // Total Row
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.red[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
@@ -407,7 +407,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.red[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -419,7 +419,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.red[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),

@@ -246,11 +246,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.blue,
                   icon: Icons.payments_outlined,
                 ),
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white
+                        ),
                         onPressed: () async {
                           await Navigator.push(
                             context,
@@ -259,12 +264,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           // Refresh all totals when returning from AddCashIn
                           _loadAllTotals();
                         },
-                        child: Text("Add Cash In Flow"),
+                        child: Center(
+                          child: Row(
+                            spacing: 3,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add),
+                              Text("Add Earning")
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orangeAccent,
+                            foregroundColor: Colors.white
+                        ),
                         onPressed: () async {
                           await Navigator.push(
                             context,
@@ -273,7 +291,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           // Refresh totals when returning from AddCashOut
                           _loadAllTotals();
                         },
-                        child: Text("Add Cash Out Flow"),
+                        child: Center(
+                          child: Row(
+                            spacing: 3,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add),
+                              Text("Add Expense")
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -281,17 +308,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        foregroundColor: Colors.white
+                    ),
                     onPressed: () async {
-                      // Ensure values are saved before navigating
                       await _loadAllTotals();
                       await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
                       );
-                      // Refresh to show calculated loan amount
                       _loadAllTotals();
                     },
-                    child: Text("Calculate Loan Amount"),
+                    child: Center(
+                      child: Row(
+                        spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.calculate_outlined ),
+                          Text("Calculate Loan Amount")
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -431,7 +469,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: currentScreen,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.orange,
+        selectedItemColor: Colors.teal,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {

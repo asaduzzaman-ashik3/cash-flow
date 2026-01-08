@@ -251,7 +251,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                   label: const Text('View PDF'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -260,7 +260,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
               // Table Header
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -286,7 +286,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.blue[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -298,7 +298,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.blue[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -360,7 +360,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
               // Total Row
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.green[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
