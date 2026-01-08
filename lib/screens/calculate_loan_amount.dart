@@ -12,10 +12,9 @@ class CalculateLoanAmount extends StatefulWidget {
 class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   String _loadAffordability = '0';
   String _netEarning = '0';
-  double _repaymentCapacity = 0.0; // E value
+  double _repaymentCapacity = 0.0;
   String _calculatedLoanAmount = '0';
-  
-  // Text controllers for user inputs
+
   final TextEditingController _loanTermController = TextEditingController();
   final TextEditingController _numberOfInstallmentsController = TextEditingController();
   final TextEditingController _yearlyInterestRateController = TextEditingController();
@@ -23,7 +22,6 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   @override
   void initState() {
     super.initState();
-    // Add listeners to trigger calculation when inputs change
     _loanTermController.addListener(_onInputChanged);
     _numberOfInstallmentsController.addListener(_onInputChanged);
     _yearlyInterestRateController.addListener(_onInputChanged);
@@ -58,7 +56,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
 
       final netEarning = prefs.getDouble('net_earning') ?? 0.0;
       final loanAffordability = prefs.getDouble('loan_affordability') ?? 0.0;
-      _repaymentCapacity = loanAffordability; // E = Loan Repayment Capacity (50% of net earning)
+      _repaymentCapacity = loanAffordability;
       
       // Load saved values
       final savedLoanTerm = prefs.getString('loan_term_months');
@@ -75,13 +73,11 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
         _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
         _loadAffordability = loanAffordability > 0 ? _formatNumber(loanAffordability) : "Not Available";
         _calculatedLoanAmount = savedCalculatedAmount ?? '0';
-        
-        // Load saved input values
+
         _loanTermController.text = savedLoanTerm ?? '';
         _numberOfInstallmentsController.text = savedNumberOfInstallments ?? '';
         _yearlyInterestRateController.text = savedInterestRate ?? '1.2';
-        
-        // Auto-calculate if values are available
+
         if (_repaymentCapacity > 0) {
           _calculateLoanAmount();
         }
@@ -110,9 +106,9 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
       }
 
       final E = _repaymentCapacity; // Loan Repayment Capacity
-      final n = double.tryParse(nValue) ?? 0.0; // Number of Installments (user input)
-      final N = double.tryParse(nTermValue) ?? 0.0; // Loan Term in months (user input)
-      final r = double.tryParse(rValue) ?? 0.0; // Yearly Interest Rate (user input)
+      final n = double.tryParse(nValue) ?? 0.0;
+      final N = double.tryParse(nTermValue) ?? 0.0;
+      final r = double.tryParse(rValue) ?? 0.0;
 
       if (n <= 0 || N <= 0 || r < 0) {
         setState(() {
@@ -121,7 +117,6 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
         return;
       }
 
-      // Formula: A = (E × n) / (1 + r/100)^N
       final numerator = E * n;
       final denominator = pow(1 + (r / 100), N);
       final loanAmount = numerator / denominator;
@@ -130,7 +125,6 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
         _calculatedLoanAmount = _formatNumber(loanAmount);
       });
 
-      // Save to SharedPreferences
       _saveCalculatedAmount(loanAmount);
     } catch (e) {
       debugPrint('Error calculating: $e');
@@ -215,7 +209,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               ),
               const SizedBox(height: 20),
               
-              // Net Earning Display
+
               Container(
                 padding: const EdgeInsets.all( 12),
                 decoration: BoxDecoration(
