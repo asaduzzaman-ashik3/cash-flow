@@ -196,6 +196,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.teal[50],
