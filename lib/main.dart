@@ -463,7 +463,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate_outlined),
-            label: 'Total List',
+            label: 'Net List',
           ),
         ],
       ),

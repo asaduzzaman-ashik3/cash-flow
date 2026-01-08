@@ -491,7 +491,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.green.shade50,
+            color: Colors.teal.shade50,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
