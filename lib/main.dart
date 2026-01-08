@@ -73,12 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!mounted) return;
 
     setState(() {
-      _totalEarn = totalEarn > 0 ? _formatNumber(totalEarn) : "Not Available";
-      _totalExpense = totalExpense > 0 ? _formatNumber(totalExpense) : "Not Available";
-      _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
+      _totalEarn = totalEarn > 0 ? _formatNumber(totalEarn) : "Not Added";
+      _totalExpense = totalExpense > 0 ? _formatNumber(totalExpense) : "Not Added";
+      _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Added";
       _loanRepaymentCapacity = loanRepaymentCapacity > 0 
           ? _formatNumber(loanRepaymentCapacity)
-          : "Not Available";
+          : "Not Added";
     });
   }
 

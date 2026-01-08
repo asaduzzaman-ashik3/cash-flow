@@ -58,7 +58,7 @@ class StatCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                (value.isNotEmpty && value != "0" && value != "0,") ? value : "Not Available",
+                (value.isNotEmpty && value != "0" && value != "0,") ? value : "Not Added",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
