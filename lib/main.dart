@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final totalExpense = await _calculateTotalExpense();
 
     final netEarning = totalEarn - totalExpense;
-    final loanRepaymentCapacity = netEarning * 0.5;
+    final loanRepaymentCapacity = netEarning * 0.4;
 
     final prefs = await SharedPreferences.getInstance();
 
