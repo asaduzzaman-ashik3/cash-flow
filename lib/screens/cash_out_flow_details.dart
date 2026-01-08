@@ -435,4 +435,3 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
     );
   }
 }
-

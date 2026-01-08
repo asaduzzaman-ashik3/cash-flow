@@ -50,6 +50,17 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
       final fruitsSale = prefs.getString('fruit_sell_earn') ?? '';
       final others = prefs.getString('others') ?? '';
 
+      // Load dynamic fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
+      Map<String, String> dynamicFields = {};
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+        }
+      }
+
       // Calculate Cash In Total
       double totalCashIn = 0.0;
       totalCashIn += double.tryParse(ownSalary) ?? 0.0;
@@ -64,6 +75,11 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
       totalCashIn += double.tryParse(treesPlantsSale) ?? 0.0;
       totalCashIn += double.tryParse(fruitsSale) ?? 0.0;
       totalCashIn += double.tryParse(others) ?? 0.0;
+      
+      // Add dynamic fields to total
+      for (final value in dynamicFields.values) {
+        totalCashIn += double.tryParse(value) ?? 0.0;
+      }
 
       // Load Cash Out Data
       final food = prefs.getString('expense_food') ?? '';
@@ -128,6 +144,7 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
             'Trees/Plants Sale': treesPlantsSale,
             'Fruits Sale': fruitsSale,
             'Others': others,
+            ...dynamicFields, // Add all dynamic fields
           };
           
           _cashOutData = {
@@ -775,4 +792,3 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
     );
   }
 }
-

@@ -48,6 +48,17 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
       final fruitsSale = prefs.getString('fruit_sell_earn') ?? '';
       final others = prefs.getString('others') ?? '';
 
+      // Load dynamic fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
+      Map<String, String> dynamicFields = {};
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+        }
+      }
+
       // Calculate total
       double total = 0.0;
       total += double.tryParse(ownSalary) ?? 0.0;
@@ -62,6 +73,11 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
       total += double.tryParse(treesPlantsSale) ?? 0.0;
       total += double.tryParse(fruitsSale) ?? 0.0;
       total += double.tryParse(others) ?? 0.0;
+      
+      // Add dynamic fields to total
+      for (final value in dynamicFields.values) {
+        total += double.tryParse(value) ?? 0.0;
+      }
 
       if (mounted) {
         setState(() {
@@ -78,6 +94,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
             'Trees/Plants Sale': treesPlantsSale,
             'Fruits Sale': fruitsSale,
             'Others': others,
+            ...dynamicFields, // Add all dynamic fields
           };
           _total = total;
         });
@@ -414,4 +431,3 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     );
   }
 }
-
