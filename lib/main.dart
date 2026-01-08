@@ -444,15 +444,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up_outlined),
-            label: 'Cash In',
+            label: 'Earning List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_down_outlined),
-            label: 'Cash Out',
+            label: 'Expense List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate_outlined),
-            label: 'Net Earning',
+            label: 'Net Earning List',
           ),
         ],
       ),

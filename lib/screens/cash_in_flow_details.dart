@@ -236,16 +236,6 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cash In Flow Details"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.picture_as_pdf),
-            tooltip: 'View PDF',
-            onPressed: _viewPdf,
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),

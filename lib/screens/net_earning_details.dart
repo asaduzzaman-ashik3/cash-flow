@@ -638,16 +638,6 @@ class _NetEarningDetailsState extends State<NetEarningDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Net Earning Details"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.picture_as_pdf),
-            tooltip: 'View PDF',
-            onPressed: _viewPdf,
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
