@@ -309,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
+                        backgroundColor: Colors.cyan,
                         foregroundColor: Colors.white
                     ),
                     onPressed: () async {
