@@ -232,45 +232,6 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     );
   }
 
-  Future<void> _downloadPdf() async {
-    try {
-      final pdfBytes = await _generatePdf();
-      final output = await getTemporaryDirectory();
-      final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      final file = File('${output.path}/cash_in_flow_$timestamp.pdf');
-      
-      await file.writeAsBytes(pdfBytes);
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('PDF saved to: ${file.path}'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-            action: SnackBarAction(
-              label: 'Open',
-              textColor: Colors.white,
-              onPressed: () async {
-                await Printing.layoutPdf(
-                  onLayout: (PdfPageFormat format) async => pdfBytes,
-                );
-              },
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving PDF: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      debugPrint('Error downloading PDF: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,11 +244,6 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
             tooltip: 'View PDF',
             onPressed: _viewPdf,
           ),
-          IconButton(
-            icon: const Icon(Icons.download),
-            tooltip: 'Download PDF',
-            onPressed: _downloadPdf,
-          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -296,36 +252,19 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // PDF Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: _viewPdf,
-                      icon: const Icon(Icons.picture_as_pdf),
-                      label: const Text('View PDF'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
+              // PDF Action Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _viewPdf,
+                  icon: const Icon(Icons.picture_as_pdf),
+                  label: const Text('View PDF'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: _downloadPdf,
-                      icon: const Icon(Icons.download),
-                      label: const Text('Download PDF'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 20),
               // Table Header
