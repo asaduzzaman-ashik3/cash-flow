@@ -183,116 +183,278 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  int _currentIndex = 1;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white, title: Text(widget.title)),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            spacing: 12,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CashInFlowDetails(),
-                    ),
-                  );
-                },
-                child: StatCard(
-                  title: "Total Earn",
-                  value: _totalEarn,
-                  color: Colors.green,
-                  icon: Icons.attach_money,
+    Widget currentScreen;
+    
+    switch (_currentIndex) {
+      case 0: // Home
+        currentScreen = SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              spacing: 12,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CashInFlowDetails(),
+                      ),
+                    );
+                  },
+                  child: StatCard(
+                    title: "Total Earn",
+                    value: _totalEarn,
+                    color: Colors.green,
+                    icon: Icons.attach_money,
+                  ),
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CashOutFlowDetails(),
-                    ),
-                  );
-                },
-                child: StatCard(
-                  title: "Total Expense",
-                  value: _totalExpense,
-                  color: Colors.red,
-                  icon: Icons.money_off,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CashOutFlowDetails(),
+                      ),
+                    );
+                  },
+                  child: StatCard(
+                    title: "Total Expense",
+                    value: _totalExpense,
+                    color: Colors.red,
+                    icon: Icons.money_off,
+                  ),
                 ),
-              ),
-              InkWell(
-                child: StatCard(
-                  title: "Net Earning",
-                  value: _netEarning,
+                InkWell(
+                  child: StatCard(
+                    title: "Net Earning",
+                    value: _netEarning,
+                    color: Colors.orange,
+                    icon: Icons.trending_up,
+                  ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
+                  },
+                ),
+                StatCard(
+                  title: "Loan Repayment Capacity",
+                  value: _loanRepaymentCapacity,
                   color: Colors.orange,
                   icon: Icons.trending_up,
                 ),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
-                },
-              ),
-              StatCard(
-                title: "Loan Repayment Capacity",
-                value: _loanRepaymentCapacity,
-                color: Colors.orange,
-                icon: Icons.trending_up,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddCashIn()),
-                        );
-                        // Refresh all totals when returning from AddCashIn
-                        _loadAllTotals();
-                      },
-                      child: Text("Add Cash In Flow"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddCashIn()),
+                          );
+                          // Refresh all totals when returning from AddCashIn
+                          _loadAllTotals();
+                        },
+                        child: Text("Add Cash In Flow"),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddCashOut()),
-                        );
-                        // Refresh totals when returning from AddCashOut
-                        _loadAllTotals();
-                      },
-                      child: Text("Add Cash Out Flow"),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddCashOut()),
+                          );
+                          // Refresh totals when returning from AddCashOut
+                          _loadAllTotals();
+                        },
+                        child: Text("Add Cash Out Flow"),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    // Ensure values are saved before navigating
-                    await _loadAllTotals();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
-                    );
-                    // Refresh to show calculated loan amount
-                    _loadAllTotals();
-                  },
-                  child: Text("Calculate Loan Amount"),
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Ensure values are saved before navigating
+                      await _loadAllTotals();
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
+                      );
+                      // Refresh to show calculated loan amount
+                      _loadAllTotals();
+                    },
+                    child: Text("Calculate Loan Amount"),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        );
+        break;
+      case 1: // Cash In Flow Details
+        currentScreen = CashInFlowDetails();
+        break;
+      case 2: // Cash Out Flow Details
+        currentScreen = CashOutFlowDetails();
+        break;
+      case 3: // Net Earning Details
+        currentScreen = NetEarningDetails();
+        break;
+      default:
+        currentScreen = SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              spacing: 12,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CashInFlowDetails(),
+                      ),
+                    );
+                  },
+                  child: StatCard(
+                    title: "Total Earn",
+                    value: _totalEarn,
+                    color: Colors.green,
+                    icon: Icons.attach_money,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CashOutFlowDetails(),
+                      ),
+                    );
+                  },
+                  child: StatCard(
+                    title: "Total Expense",
+                    value: _totalExpense,
+                    color: Colors.red,
+                    icon: Icons.money_off,
+                  ),
+                ),
+                InkWell(
+                  child: StatCard(
+                    title: "Net Earning",
+                    value: _netEarning,
+                    color: Colors.orange,
+                    icon: Icons.trending_up,
+                  ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
+                  },
+                ),
+                StatCard(
+                  title: "Loan Repayment Capacity",
+                  value: _loanRepaymentCapacity,
+                  color: Colors.orange,
+                  icon: Icons.trending_up,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddCashIn()),
+                          );
+                          // Refresh all totals when returning from AddCashIn
+                          _loadAllTotals();
+                        },
+                        child: Text("Add Cash In Flow"),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddCashOut()),
+                          );
+                          // Refresh totals when returning from AddCashOut
+                          _loadAllTotals();
+                        },
+                        child: Text("Add Cash Out Flow"),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Ensure values are saved before navigating
+                      await _loadAllTotals();
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
+                      );
+                      // Refresh to show calculated loan amount
+                      _loadAllTotals();
+                    },
+                    child: Text("Calculate Loan Amount"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+    }
+    
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white, 
+        title: Text(_currentIndex == 0 ? widget.title : [
+          'Home',
+          'Cash In Flow',
+          'Cash Out Flow',
+          'Net Earning'
+        ][_currentIndex]),
+      ),
+      body: currentScreen,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() => _currentIndex = index);
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_downward),
+            label: 'Cash In',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_upward),
+            label: 'Cash Out',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calculate),
+            label: 'Net Earning',
+          ),
+        ],
       ),
     );
   }
