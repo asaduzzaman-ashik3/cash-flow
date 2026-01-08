@@ -255,7 +255,7 @@ class _AddCashInState extends State<AddCashIn> {
                         onPressed: _resetValues,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 8),
-                          backgroundColor: Colors.orangeAccent,
+                          backgroundColor: Colors.deepOrangeAccent,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
@@ -272,7 +272,7 @@ class _AddCashInState extends State<AddCashIn> {
                       child: ElevatedButton(
                         onPressed: _saveValues,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: Colors.teal,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
