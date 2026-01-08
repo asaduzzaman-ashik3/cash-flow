@@ -439,19 +439,19 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_downward),
+            icon: Icon(Icons.trending_up_outlined),
             label: 'Cash In',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_upward),
+            icon: Icon(Icons.trending_down_outlined),
             label: 'Cash Out',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
+            icon: Icon(Icons.calculate_outlined),
             label: 'Net Earning',
           ),
         ],
