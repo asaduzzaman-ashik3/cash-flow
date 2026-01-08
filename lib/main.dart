@@ -3,6 +3,7 @@ import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:cash_flow/screens/calculate_loan_amount.dart';
 import 'package:cash_flow/screens/cash_in_flow_details.dart';
 import 'package:cash_flow/screens/cash_out_flow_details.dart';
+import 'package:cash_flow/screens/net_earning_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -224,11 +225,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icons.money_off,
                 ),
               ),
-              StatCard(
-                title: "Net Earning",
-                value: _netEarning,
-                color: Colors.orange,
-                icon: Icons.trending_up,
+              InkWell(
+                child: StatCard(
+                  title: "Net Earning",
+                  value: _netEarning,
+                  color: Colors.orange,
+                  icon: Icons.trending_up,
+                ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
+                },
               ),
               StatCard(
                 title: "Loan Repayment Capacity",
