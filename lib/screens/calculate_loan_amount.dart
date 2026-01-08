@@ -12,19 +12,37 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   String _loadAffordability = '0';
   String _netEarning = '0';
   double _repaymentCapacity = 0.0; // E value
-  int? _selectedLoanTermMonths; // N value
-  final double _yearlyInterestRate = 1.2; // Fixed 1.2% yearly interest
   String _calculatedLoanAmount = '0';
   
-  // Loan term options: 6 months to 60 months (5 years)
-  final List<int> _loanTermOptions = [6, 12, 18, 24, 30, 36, 42, 48, 54, 60];
+  // Text controllers for user inputs
+  final TextEditingController _loanTermController = TextEditingController();
+  final TextEditingController _numberOfInstallmentsController = TextEditingController();
+  final TextEditingController _yearlyInterestRateController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    // Add listeners to trigger calculation when inputs change
+    _loanTermController.addListener(_onInputChanged);
+    _numberOfInstallmentsController.addListener(_onInputChanged);
+    _yearlyInterestRateController.addListener(_onInputChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadSavedValues();
     });
+  }
+
+  @override
+  void dispose() {
+    _loanTermController.dispose();
+    _numberOfInstallmentsController.dispose();
+    _yearlyInterestRateController.dispose();
+    super.dispose();
+  }
+
+  void _onInputChanged() {
+    if (_repaymentCapacity > 0) {
+      _calculateLoanAmount();
+    }
   }
 
   @override
@@ -39,10 +57,12 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
 
       final netEarning = prefs.getDouble('net_earning') ?? 0.0;
       final loanAffordability = prefs.getDouble('loan_affordability') ?? 0.0;
-      _repaymentCapacity = loanAffordability; // E = Loan Repayment Capacity (40% of net earning)
+      _repaymentCapacity = loanAffordability; // E = Loan Repayment Capacity (50% of net earning)
       
-      // Load saved N value
-      final savedN = prefs.getString('loan_term_months');
+      // Load saved values
+      final savedLoanTerm = prefs.getString('loan_term_months');
+      final savedNumberOfInstallments = prefs.getString('number_of_installments');
+      final savedInterestRate = prefs.getString('yearly_interest_rate');
       final savedCalculatedAmount = prefs.getString('calculated_loan_amount');
 
       debugPrint('Loaded net_earning: $netEarning');
@@ -50,23 +70,18 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
 
       if (!mounted) return;
 
-      // Validate saved N value - must be in the valid options list
-      int? validatedN;
-      if (savedN != null) {
-        final parsedN = int.tryParse(savedN);
-        if (parsedN != null && _loanTermOptions.contains(parsedN)) {
-          validatedN = parsedN;
-        }
-      }
-
       setState(() {
         _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
         _loadAffordability = loanAffordability > 0 ? _formatNumber(loanAffordability) : "Not Available";
-        _selectedLoanTermMonths = validatedN;
         _calculatedLoanAmount = savedCalculatedAmount ?? '0';
         
-        // Auto-calculate if N is selected and valid
-        if (_selectedLoanTermMonths != null && _repaymentCapacity > 0) {
+        // Load saved input values
+        _loanTermController.text = savedLoanTerm ?? '';
+        _numberOfInstallmentsController.text = savedNumberOfInstallments ?? '';
+        _yearlyInterestRateController.text = savedInterestRate ?? '1.2';
+        
+        // Auto-calculate if values are available
+        if (_repaymentCapacity > 0) {
           _calculateLoanAmount();
         }
       });
@@ -76,15 +91,34 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   }
 
   void _calculateLoanAmount() {
-    if (_selectedLoanTermMonths == null || _repaymentCapacity <= 0) {
+    if (_repaymentCapacity <= 0) {
       return;
     }
 
     try {
+      // Get user input values
+      final nValue = _numberOfInstallmentsController.text.trim();
+      final rValue = _yearlyInterestRateController.text.trim();
+      final nTermValue = _loanTermController.text.trim();
+      
+      if (nValue.isEmpty || rValue.isEmpty || nTermValue.isEmpty) {
+        setState(() {
+          _calculatedLoanAmount = '0';
+        });
+        return;
+      }
+
       final E = _repaymentCapacity; // Loan Repayment Capacity
-      final n = _selectedLoanTermMonths!.toDouble(); // n = N (Number of Installments)
-      final N = _selectedLoanTermMonths!.toDouble(); // Loan Term in months
-      final r = _yearlyInterestRate; // Fixed 1.2% yearly
+      final n = double.tryParse(nValue) ?? 0.0; // Number of Installments (user input)
+      final N = double.tryParse(nTermValue) ?? 0.0; // Loan Term in months (user input)
+      final r = double.tryParse(rValue) ?? 0.0; // Yearly Interest Rate (user input)
+
+      if (n <= 0 || N <= 0 || r < 0) {
+        setState(() {
+          _calculatedLoanAmount = '0';
+        });
+        return;
+      }
 
       // Formula: A = (E × n) / (1 + r/100)^N
       final numerator = E * n;
@@ -99,6 +133,9 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
       _saveCalculatedAmount(loanAmount);
     } catch (e) {
       debugPrint('Error calculating: $e');
+      setState(() {
+        _calculatedLoanAmount = '0';
+      });
     }
   }
 
@@ -113,44 +150,15 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   Future<void> _saveCalculatedAmount(double loanAmount) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('loan_term_months', _selectedLoanTermMonths.toString());
+      await prefs.setString('loan_term_months', _loanTermController.text);
+      await prefs.setString('number_of_installments', _numberOfInstallmentsController.text);
+      await prefs.setString('yearly_interest_rate', _yearlyInterestRateController.text);
       await prefs.setString('calculated_loan_amount', loanAmount.toString());
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Loan amount calculated and saved!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
     } catch (e) {
       debugPrint('Error saving calculated amount: $e');
     }
   }
 
-  void _onLoanTermChanged(int? value) {
-    setState(() {
-      _selectedLoanTermMonths = value;
-    });
-    if (value != null && _repaymentCapacity > 0) {
-      _calculateLoanAmount();
-    }
-  }
-
-  String _getLoanTermLabel(int months) {
-    if (months < 12) {
-      return '$months Month${months > 1 ? 's' : ''}';
-    } else {
-      final years = months ~/ 12;
-      final remainingMonths = months % 12;
-      if (remainingMonths == 0) {
-        return '$years Year${years > 1 ? 's' : ''}';
-      } else {
-        return '$years Year${years > 1 ? 's' : ''} $remainingMonths Month${remainingMonths > 1 ? 's' : ''}';
-      }
-    }
-  }
 
   String _formatNumber(double value) {
     if (value == 0.0) return "0";
@@ -192,10 +200,10 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     Text(
                       'Where:\n'
                       'A = Loan Amount\n'
-                      'E = Loan Repayment Capacity (40% of Net Earning)\n'
-                      'n = Number of Installments (n = N)\n'
-                      'N = Loan Term (Months)\n'
-                      'r = Interest Rate (1.2% yearly)',
+                      'E = Loan Repayment Capacity (50% of Net Earning)\n'
+                      'n = Number of Installments (User Input)\n'
+                      'N = Loan Term in Months (User Input)\n'
+                      'r = Yearly Interest Rate (User Input)',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[700],
@@ -258,41 +266,15 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
-              
-              // Interest Rate Display
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Yearly Interest Rate (r):',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      '${_yearlyInterestRate}%',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 20),
               
-              // Loan Term Dropdown
-              DropdownButtonFormField<int>(
-                value: _selectedLoanTermMonths,
+              // Loan Term Input Field
+              TextField(
+                controller: _loanTermController,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Loan Term (N)',
-                  hintText: 'Select loan term',
+                  labelText: 'Loan Term (N) - Months',
+                  hintText: 'Enter loan term in months',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -303,45 +285,64 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     horizontal: 12,
                   ),
                 ),
-                items: _loanTermOptions.map((int months) {
-                  return DropdownMenuItem<int>(
-                    value: months,
-                    child: Text(_getLoanTermLabel(months)),
-                  );
-                }).toList(),
-                onChanged: _onLoanTermChanged,
+                onChanged: (_) => _calculateLoanAmount(),
               ),
               const SizedBox(height: 12),
               
-              // n value display (same as N)
-              if (_selectedLoanTermMonths != null)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(8),
+              // Number of Installments Input Field
+              TextField(
+                controller: _numberOfInstallmentsController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Number of Installments (n)',
+                  hintText: 'Enter number of installments',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Number of Installments (n): ',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      Text(
-                        '${_selectedLoanTermMonths}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  filled: true,
+                  fillColor: Colors.grey[50],
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 12,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.auto_fix_high),
+                    tooltip: 'Use loan term value',
+                    onPressed: () {
+                      if (_loanTermController.text.isNotEmpty) {
+                        _numberOfInstallmentsController.text = _loanTermController.text;
+                        _calculateLoanAmount();
+                      }
+                    },
                   ),
                 ),
+                onChanged: (_) => _calculateLoanAmount(),
+              ),
+              const SizedBox(height: 12),
+              
+              // Yearly Interest Rate Input Field
+              TextField(
+                controller: _yearlyInterestRateController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: 'Yearly Interest Rate (r) %',
+                  hintText: 'Enter yearly interest rate (e.g., 1.2)',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[50],
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 12,
+                  ),
+                ),
+                onChanged: (_) => _calculateLoanAmount(),
+              ),
               const SizedBox(height: 20),
               
               // Calculated Loan Amount Display
-              if (_selectedLoanTermMonths != null)
-                Container(
+              Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
