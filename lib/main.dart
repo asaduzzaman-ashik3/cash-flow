@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: "Total Earn",
                     value: _totalEarn,
                     color: Colors.green,
-                    icon: Icons.attach_money,
+                    icon: Icons.trending_up_outlined,
                   ),
                 ),
                 InkWell(
@@ -226,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: "Total Expense",
                     value: _totalExpense,
                     color: Colors.red,
-                    icon: Icons.money_off,
+                    icon: Icons.trending_down_outlined,
                   ),
                 ),
                 InkWell(
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: "Net Earning",
                     value: _netEarning,
                     color: Colors.orange,
-                    icon: Icons.trending_up,
+                    icon: Icons.account_balance_wallet_outlined,
                   ),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
@@ -244,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: "Loan Repayment Capacity",
                   value: _loanRepaymentCapacity,
                   color: Colors.blue,
-                  icon: Icons.trending_up,
+                  icon: Icons.payments_outlined,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
