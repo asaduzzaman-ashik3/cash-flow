@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'dart:typed_data';
+import 'package:intl/intl.dart';
 
 class CashOutFlowDetails extends StatefulWidget {
   const CashOutFlowDetails({super.key});
@@ -114,11 +119,153 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
     );
   }
 
+  Future<Uint8List> _generatePdf() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(30),
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // Header
+              pw.Text(
+                'Cash Out Flow Details',
+                style: pw.TextStyle(
+                  fontSize: 24,
+                  fontWeight: pw.FontWeight.bold,
+                  color: PdfColors.red,
+                ),
+              ),
+              pw.SizedBox(height: 10),
+              pw.Text(
+                'Generated on: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
+                style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+              ),
+              pw.SizedBox(height: 20),
+              
+              // Table
+              pw.Table(
+                border: pw.TableBorder.all(color: PdfColors.grey300),
+                children: [
+                  // Header Row
+                  pw.TableRow(
+                    decoration: const pw.BoxDecoration(color: PdfColors.red50),
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Category',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Amount (৳)',
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  // Data Rows
+                  ..._cashOutData.entries.map((entry) {
+                    final value = entry.value.isEmpty || entry.value == '0'
+                        ? '0'
+                        : _formatNumber(entry.value);
+                    return pw.TableRow(
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8),
+                          child: pw.Text(
+                            entry.key,
+                            style: const pw.TextStyle(fontSize: 10),
+                          ),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8),
+                          child: pw.Text(
+                            value,
+                            textAlign: pw.TextAlign.right,
+                            style: pw.TextStyle(
+                              fontSize: 10,
+                              fontWeight: pw.FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  
+                  // Total Row
+                  pw.TableRow(
+                    decoration: const pw.BoxDecoration(color: PdfColors.red50),
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Total',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                            color: PdfColors.red900,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumber(_total.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                            color: PdfColors.red900,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    return pdf.save();
+  }
+
+  Future<void> _viewPdf() async {
+    final pdfBytes = await _generatePdf();
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdfBytes,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cash Out Flow Details"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf),
+            tooltip: 'View PDF',
+            onPressed: _viewPdf,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -126,6 +273,21 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // PDF Action Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _viewPdf,
+                  icon: const Icon(Icons.picture_as_pdf),
+                  label: const Text('View PDF'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               // Table Header
               Container(
                 decoration: BoxDecoration(
