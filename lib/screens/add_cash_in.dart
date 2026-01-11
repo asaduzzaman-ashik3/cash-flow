@@ -228,15 +228,22 @@ class _AddCashInState extends State<AddCashIn> {
             children: [
               _buildTextField('Own Salary', _ownSalaryController),
               const SizedBox(width: 8),
-              _buildTextField('Spouse Salary', _husbandWifeSalaryController),
-              _buildTextField('Child Salary', _sonDaughterSalaryController),
+              Row(
+                children: [
+                  Expanded(child: _buildTextField('Spouse Salary', _husbandWifeSalaryController),),
+                  Expanded(child: _buildTextField('Child Salary', _sonDaughterSalaryController),)
+                ],
+              ),
               const SizedBox(width: 8),
               _buildTextField('Parent Salary', _fatherMotherSalaryController),
               _buildTextField('Savings Profit', _savingsEarnController),
               const SizedBox(width: 8),
-              _buildTextField('House Rent Income', _homeRentEarnController),
-
-              _buildTextField('Business Income', _businessEarnController),
+              Row(
+                children: [
+                  Expanded(child: _buildTextField('House Rent Income', _homeRentEarnController),),
+                  Expanded(child: _buildTextField('Business Income', _businessEarnController),)
+                ],
+              ),
               const SizedBox(width: 8),
               _buildTextField('Agriculture Income', _agricultureEarnController),
               _buildTextField(
@@ -244,9 +251,12 @@ class _AddCashInState extends State<AddCashIn> {
                 _animalIncreasingEarnController,
               ),
               const SizedBox(width: 8),
-              _buildTextField('Trees/Plants Sale', _treeSellsEarnController),
-
-              _buildTextField('Fruits Sale', _fruitSellEarnController),
+              Row(
+                children: [
+                  Expanded(child: _buildTextField('Trees/Plants Sale', _treeSellsEarnController),),
+                  Expanded(child: _buildTextField('Fruits Sale', _fruitSellEarnController),)
+                ],
+              ),
               const SizedBox(width: 8),
               _buildTextField('Others', _othersController),
               const SizedBox(height: 10),

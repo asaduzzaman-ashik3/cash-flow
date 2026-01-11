@@ -217,7 +217,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     Text(
                       'Where:\n'
                       'A = Loan Amount\n'
-                      'E = Loan Repayment Capacity (50% of Net Earning)\n'
+                      'E = Loan Repayment Capacity (40% of Net Earning)\n'
                       'n = Number of Installments (User Input)\n'
                       'N = Loan Term in Months (User Input)\n'
                       'r = Yearly Interest Rate (User Input)',

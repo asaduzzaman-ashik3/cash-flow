@@ -72,7 +72,7 @@ class NetEarningPdfView {
                           // Header Row
                           _buildTwoColumnRow(
                             category: 'Category',
-                            amount: 'Amount (৳)',
+                            amount: 'Amount',
                             isHeader: true,
                           ),
                           // Cash In Data Rows
@@ -150,7 +150,7 @@ class NetEarningPdfView {
                           // Header Row
                           _buildTwoColumnRow(
                             category: 'Category',
-                            amount: 'Amount (৳)',
+                            amount: 'Amount',
                             isHeader: true,
                           ),
                           // Cash Out Data Rows
@@ -160,7 +160,7 @@ class NetEarningPdfView {
                               category: entry.key,
                               amount: value,
                             );
-                          }).toList(),
+                          }),
                           // Cash Out Total
                           pw.Container(
                             width: double.infinity,

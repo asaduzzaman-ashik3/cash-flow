@@ -54,7 +54,7 @@ class CashOutPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
-                          'Amount (৳)',
+                          'Amount',
                           textAlign: pw.TextAlign.right,
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
