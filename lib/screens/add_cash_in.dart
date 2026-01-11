@@ -442,15 +442,12 @@ class _AddCashInState extends State<AddCashIn> {
               ),
               const SizedBox(width: 8),
               _buildTextField('Others', _othersController),
-
               // Dynamic fields section
               if (_dynamicLabels.isNotEmpty) ...[
                 ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
               ],
-
               const SizedBox(height: 10),
-
-
+              
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

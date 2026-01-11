@@ -38,7 +38,6 @@ class NetEarningPdfView {
                 style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
-
               // Main Table with Cash In and Cash Out
               pw.Table(
                 border: pw.TableBorder.all(),
@@ -189,7 +188,6 @@ class NetEarningPdfView {
               ),
 
               pw.SizedBox(height: 20),
-
               // Separate Net Earning Section
               pw.Container(
                 padding: const pw.EdgeInsets.all(10),

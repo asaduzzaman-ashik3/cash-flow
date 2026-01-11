@@ -532,16 +532,12 @@ class _AddCashOutState extends State<AddCashOut> {
                   ),
                 ],
               ),
-
               // Dynamic fields section
               if (_dynamicLabels.isNotEmpty) ...[
                 ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
               ],
-
               const SizedBox(height: 10),
-
-
-
+              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Row(

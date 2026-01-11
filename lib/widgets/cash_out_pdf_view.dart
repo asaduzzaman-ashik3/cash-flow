@@ -110,7 +110,6 @@ class CashOutPdfView {
                       ],
                     );
                   }),
-
                   // Total Row
                   pw.TableRow(
                     children: [
