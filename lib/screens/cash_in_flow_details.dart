@@ -398,7 +398,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
               // Total Row
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.green[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
@@ -424,7 +424,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.green[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
