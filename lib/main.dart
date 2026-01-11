@@ -376,7 +376,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Padding(
             padding: EdgeInsets.all(20),
             child: Column(
-              spacing: 12,
+              spacing: 8,
               children: [
                 Container(
                   width: double.infinity,
@@ -520,7 +520,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 1),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -541,9 +541,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
-                      child: Text(
-                        "View All",
-                        style: TextStyle(color: Colors.black),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "View All",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
@@ -598,9 +601,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
-                      child: Text(
-                        "View All",
-                        style: TextStyle(color: Colors.black),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "View All",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
