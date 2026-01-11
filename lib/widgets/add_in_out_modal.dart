@@ -51,7 +51,7 @@ class AddInOutModal extends StatelessWidget {
                     icon: Icon(Icons.trending_up, color: Colors.white),
                     label: Text('Add Cash In', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.teal,
                       padding: EdgeInsets.symmetric(vertical: 15),
                     ),
                   ),
