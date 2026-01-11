@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cash_flow/screens/add_cash_in.dart';
 import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:cash_flow/screens/calculate_loan_amount.dart';
@@ -38,7 +40,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   String _totalEarn = "0";
   String _totalExpense = "0";
   String _netEarning = "0";
@@ -60,27 +61,30 @@ class _MyHomePageState extends State<MyHomePage> {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setDouble('net_earning', netEarning);
-    await prefs.setDouble('loan_affordability', loanRepaymentCapacity); // Save as E value
+    await prefs.setDouble(
+      'loan_affordability',
+      loanRepaymentCapacity,
+    ); // Save as E value
 
     // Get calculated loan amount if available
     final calculatedLoanAmount = prefs.getString('calculated_loan_amount');
     if (calculatedLoanAmount != null &&
-        calculatedLoanAmount.isNotEmpty && 
-        calculatedLoanAmount != '0') {
-    }
+        calculatedLoanAmount.isNotEmpty &&
+        calculatedLoanAmount != '0') {}
 
     if (!mounted) return;
 
     setState(() {
       _totalEarn = totalEarn > 0 ? _formatNumber(totalEarn) : "Not Added";
-      _totalExpense = totalExpense > 0 ? _formatNumber(totalExpense) : "Not Added";
+      _totalExpense = totalExpense > 0
+          ? _formatNumber(totalExpense)
+          : "Not Added";
       _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Added";
-      _loanRepaymentCapacity = loanRepaymentCapacity > 0 
+      _loanRepaymentCapacity = loanRepaymentCapacity > 0
           ? _formatNumber(loanRepaymentCapacity)
           : "Not Added";
     });
   }
-
 
   Future<double> _calculateTotalEarn() async {
     try {
@@ -88,20 +92,33 @@ class _MyHomePageState extends State<MyHomePage> {
       double total = 0.0;
 
       // Get all 12 cash-in values and sum them
-      final ownSalary = double.tryParse(prefs.getString('own_salary') ?? '') ?? 0.0;
-      final husbandWifeSalary = double.tryParse(prefs.getString('husband_wife_salary') ?? '') ?? 0.0;
-      final sonDaughterSalary = double.tryParse(prefs.getString('son_daughter_salary') ?? '') ?? 0.0;
-      final fatherMotherSalary = double.tryParse(prefs.getString('father_mother_salary') ?? '') ?? 0.0;
-      final savingsEarn = double.tryParse(prefs.getString('savings_earn') ?? '') ?? 0.0;
-      final homeRentEarn = double.tryParse(prefs.getString('home_rent_earn') ?? '') ?? 0.0;
-      final businessEarn = double.tryParse(prefs.getString('business_earn') ?? '') ?? 0.0;
-      final agricultureEarn = double.tryParse(prefs.getString('agriculture_earn') ?? '') ?? 0.0;
-      final animalIncreasingEarn = double.tryParse(prefs.getString('animal_increasing_earn') ?? '') ?? 0.0;
-      final treeSellsEarn = double.tryParse(prefs.getString('tree_sells_earn') ?? '') ?? 0.0;
-      final fruitSellEarn = double.tryParse(prefs.getString('fruit_sell_earn') ?? '') ?? 0.0;
+      final ownSalary =
+          double.tryParse(prefs.getString('own_salary') ?? '') ?? 0.0;
+      final husbandWifeSalary =
+          double.tryParse(prefs.getString('husband_wife_salary') ?? '') ?? 0.0;
+      final sonDaughterSalary =
+          double.tryParse(prefs.getString('son_daughter_salary') ?? '') ?? 0.0;
+      final fatherMotherSalary =
+          double.tryParse(prefs.getString('father_mother_salary') ?? '') ?? 0.0;
+      final savingsEarn =
+          double.tryParse(prefs.getString('savings_earn') ?? '') ?? 0.0;
+      final homeRentEarn =
+          double.tryParse(prefs.getString('home_rent_earn') ?? '') ?? 0.0;
+      final businessEarn =
+          double.tryParse(prefs.getString('business_earn') ?? '') ?? 0.0;
+      final agricultureEarn =
+          double.tryParse(prefs.getString('agriculture_earn') ?? '') ?? 0.0;
+      final animalIncreasingEarn =
+          double.tryParse(prefs.getString('animal_increasing_earn') ?? '') ??
+          0.0;
+      final treeSellsEarn =
+          double.tryParse(prefs.getString('tree_sells_earn') ?? '') ?? 0.0;
+      final fruitSellEarn =
+          double.tryParse(prefs.getString('fruit_sell_earn') ?? '') ?? 0.0;
       final others = double.tryParse(prefs.getString('others') ?? '') ?? 0.0;
 
-      total = ownSalary +
+      total =
+          ownSalary +
           husbandWifeSalary +
           sonDaughterSalary +
           fatherMotherSalary +
@@ -115,12 +132,17 @@ class _MyHomePageState extends State<MyHomePage> {
           others;
 
       // Add dynamic cash in fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      final dynamicFieldsJson =
+          prefs.getStringList('dynamic_cash_in_fields') ?? [];
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          final value = double.tryParse(prefs.getString('dynamic_cash_in_field_$label') ?? '') ?? 0.0;
+          final value =
+              double.tryParse(
+                prefs.getString('dynamic_cash_in_field_$label') ?? '',
+              ) ??
+              0.0;
           total += value;
         }
       }
@@ -136,28 +158,62 @@ class _MyHomePageState extends State<MyHomePage> {
       final prefs = await SharedPreferences.getInstance();
       double total = 0.0;
 
-      final food = double.tryParse(prefs.getString('expense_food') ?? '') ?? 0.0;
-      final houseRent = double.tryParse(prefs.getString('expense_house_rent') ?? '') ?? 0.0;
-      final loanInstallment = double.tryParse(prefs.getString('expense_loan_installment') ?? '') ?? 0.0;
+      final food =
+          double.tryParse(prefs.getString('expense_food') ?? '') ?? 0.0;
+      final houseRent =
+          double.tryParse(prefs.getString('expense_house_rent') ?? '') ?? 0.0;
+      final loanInstallment =
+          double.tryParse(prefs.getString('expense_loan_installment') ?? '') ??
+          0.0;
       final dps = double.tryParse(prefs.getString('expense_dps') ?? '') ?? 0.0;
-      final clothingPurchase = double.tryParse(prefs.getString('expense_clothing_purchase') ?? '') ?? 0.0;
-      final medical = double.tryParse(prefs.getString('expense_medical') ?? '') ?? 0.0;
-      final education = double.tryParse(prefs.getString('expense_education') ?? '') ?? 0.0;
-      final electricityBill = double.tryParse(prefs.getString('expense_electricity_bill') ?? '') ?? 0.0;
-      final fuelCost = double.tryParse(prefs.getString('expense_fuel_cost') ?? '') ?? 0.0;
-      final transportationCost = double.tryParse(prefs.getString('expense_transportation_cost') ?? '') ?? 0.0;
-      final mobileInternetBill = double.tryParse(prefs.getString('expense_mobile_internet_bill') ?? '') ?? 0.0;
-      final houseRepair = double.tryParse(prefs.getString('expense_house_repair') ?? '') ?? 0.0;
-      final landTax = double.tryParse(prefs.getString('expense_land_tax') ?? '') ?? 0.0;
-      final festival = double.tryParse(prefs.getString('expense_festival') ?? '') ?? 0.0;
-      final dishBill = double.tryParse(prefs.getString('expense_dish_bill') ?? '') ?? 0.0;
-      final generatorBill = double.tryParse(prefs.getString('expense_generator_bill') ?? '') ?? 0.0;
-      final domesticWorkerSalary = double.tryParse(prefs.getString('expense_domestic_worker_salary') ?? '') ?? 0.0;
-      final serviceCharge = double.tryParse(prefs.getString('expense_service_charge') ?? '') ?? 0.0;
-      final garbageBill = double.tryParse(prefs.getString('expense_garbage_bill') ?? '') ?? 0.0;
-      final others = double.tryParse(prefs.getString('expense_others') ?? '') ?? 0.0;
+      final clothingPurchase =
+          double.tryParse(prefs.getString('expense_clothing_purchase') ?? '') ??
+          0.0;
+      final medical =
+          double.tryParse(prefs.getString('expense_medical') ?? '') ?? 0.0;
+      final education =
+          double.tryParse(prefs.getString('expense_education') ?? '') ?? 0.0;
+      final electricityBill =
+          double.tryParse(prefs.getString('expense_electricity_bill') ?? '') ??
+          0.0;
+      final fuelCost =
+          double.tryParse(prefs.getString('expense_fuel_cost') ?? '') ?? 0.0;
+      final transportationCost =
+          double.tryParse(
+            prefs.getString('expense_transportation_cost') ?? '',
+          ) ??
+          0.0;
+      final mobileInternetBill =
+          double.tryParse(
+            prefs.getString('expense_mobile_internet_bill') ?? '',
+          ) ??
+          0.0;
+      final houseRepair =
+          double.tryParse(prefs.getString('expense_house_repair') ?? '') ?? 0.0;
+      final landTax =
+          double.tryParse(prefs.getString('expense_land_tax') ?? '') ?? 0.0;
+      final festival =
+          double.tryParse(prefs.getString('expense_festival') ?? '') ?? 0.0;
+      final dishBill =
+          double.tryParse(prefs.getString('expense_dish_bill') ?? '') ?? 0.0;
+      final generatorBill =
+          double.tryParse(prefs.getString('expense_generator_bill') ?? '') ??
+          0.0;
+      final domesticWorkerSalary =
+          double.tryParse(
+            prefs.getString('expense_domestic_worker_salary') ?? '',
+          ) ??
+          0.0;
+      final serviceCharge =
+          double.tryParse(prefs.getString('expense_service_charge') ?? '') ??
+          0.0;
+      final garbageBill =
+          double.tryParse(prefs.getString('expense_garbage_bill') ?? '') ?? 0.0;
+      final others =
+          double.tryParse(prefs.getString('expense_others') ?? '') ?? 0.0;
 
-      total = food +
+      total =
+          food +
           houseRent +
           loanInstallment +
           dps +
@@ -179,12 +235,17 @@ class _MyHomePageState extends State<MyHomePage> {
           others;
 
       // Add dynamic cash out fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      final dynamicFieldsJson =
+          prefs.getStringList('dynamic_cash_out_fields') ?? [];
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          final value = double.tryParse(prefs.getString('dynamic_cash_out_field_$label') ?? '') ?? 0.0;
+          final value =
+              double.tryParse(
+                prefs.getString('dynamic_cash_out_field_$label') ?? '',
+              ) ??
+              0.0;
           total += value;
         }
       }
@@ -196,10 +257,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String _formatNumber(double number) {
-    return number.toStringAsFixed(0).replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
+    return number
+        .toStringAsFixed(0)
+        .replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]},',
+        );
   }
 
   int _currentIndex = 0;
@@ -207,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Widget currentScreen;
-    
+
     switch (_currentIndex) {
       case 0: // Home
         currentScreen = SingleChildScrollView(
@@ -216,6 +279,144 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               spacing: 12,
               children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(34),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF25B1E6),
+                        Color(0xFFC868FD),
+                        Color(0xFFFA9270),
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    spacing: 5,
+                    children: [
+                      Text(
+                        "Net Income",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        _netEarning,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            spacing: 10,
+                            children: [
+                              ClipOval(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 10,
+                                    sigmaY: 10,
+                                  ),
+                                  child: Container(
+                                    width: 35,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.4),
+                                      // glass effect
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.trending_up_outlined,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Cash In",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    _totalEarn,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            spacing: 10,
+                            children: [
+                              ClipOval(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 10,
+                                    sigmaY: 10,
+                                  ),
+                                  child: Container(
+                                    width: 35,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.4),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.trending_down_outlined,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Cash Out",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    _totalExpense,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
                 StatCard(
                   title: "Total Cash In",
                   value: _totalEarn,
@@ -240,7 +441,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.cyan,
                   icon: Icons.payments_outlined,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -248,12 +449,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.teal,
-                          foregroundColor: Colors.white
+                          foregroundColor: Colors.white,
                         ),
                         onPressed: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddCashIn()),
+                            MaterialPageRoute(
+                              builder: (context) => AddCashIn(),
+                            ),
                           );
                           _loadAllTotals();
                         },
@@ -261,10 +464,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             spacing: 3,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Text("Add Cash In")
-                            ],
+                            children: [Icon(Icons.add), Text("Add Cash In")],
                           ),
                         ),
                       ),
@@ -273,13 +473,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent,
-                            foregroundColor: Colors.white
+                          backgroundColor: Colors.deepOrangeAccent,
+                          foregroundColor: Colors.white,
                         ),
                         onPressed: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddCashOut()),
+                            MaterialPageRoute(
+                              builder: (context) => AddCashOut(),
+                            ),
                           );
                           _loadAllTotals();
                         },
@@ -287,10 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             spacing: 3,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Text("Add Cash Out")
-                            ],
+                            children: [Icon(Icons.add), Text("Add Cash Out")],
                           ),
                         ),
                       ),
@@ -301,14 +500,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyan,
-                        foregroundColor: Colors.white
+                      backgroundColor: Colors.cyan,
+                      foregroundColor: Colors.white,
                     ),
                     onPressed: () async {
                       await _loadAllTotals();
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
+                        MaterialPageRoute(
+                          builder: (context) => CalculateLoanAmount(),
+                        ),
                       );
                       _loadAllTotals();
                     },
@@ -317,8 +518,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         spacing: 5,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.calculate_outlined ),
-                          Text("Calculate Loan Amount")
+                          Icon(Icons.calculate_outlined),
+                          Text("Calculate Loan Amount"),
                         ],
                       ),
                     ),
@@ -385,7 +586,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.trending_up,
                   ),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => NetEarningDetails()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NetEarningDetails(),
+                      ),
+                    );
                   },
                 ),
                 StatCard(
@@ -402,7 +608,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddCashIn()),
+                            MaterialPageRoute(
+                              builder: (context) => AddCashIn(),
+                            ),
                           );
                           _loadAllTotals();
                         },
@@ -415,7 +623,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddCashOut()),
+                            MaterialPageRoute(
+                              builder: (context) => AddCashOut(),
+                            ),
                           );
                           _loadAllTotals();
                         },
@@ -431,7 +641,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       await _loadAllTotals();
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
+                        MaterialPageRoute(
+                          builder: (context) => CalculateLoanAmount(),
+                        ),
                       );
                       // Refresh to show calculated loan amount
                       _loadAllTotals();
@@ -444,16 +656,20 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
     }
-    
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, 
-        title: Text(_currentIndex == 0 ? widget.title : [
-          'Home',
-          'Cash In Flow List',
-          'Cash Out Flow List',
-          'Net Income List'
-        ][_currentIndex]),
+        backgroundColor: Colors.white,
+        title: Text(
+          _currentIndex == 0
+              ? widget.title
+              : [
+                  'Home',
+                  'Cash In Flow List',
+                  'Cash Out Flow List',
+                  'Net Income List',
+                ][_currentIndex],
+        ),
       ),
       body: currentScreen,
       bottomNavigationBar: BottomNavigationBar(
