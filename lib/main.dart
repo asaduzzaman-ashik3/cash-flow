@@ -572,11 +572,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         }).toList(),
                       );
                     } else {
-                      return StatCard(
-                        title: "Total Cash In",
-                        value: _totalEarn,
-                        color: Colors.teal,
-                        icon: Icons.trending_up_outlined,
+                      return Center(
+                        child: Container(
+                          width: double.infinity,
+                          height: 100,
+                          color: Colors.white ,
+                          child: Center(
+                            child: Text("No Cash In Found",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                          )
+                        )
                       );
                     }
                   },
@@ -630,11 +634,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         }).toList(),
                       );
                     } else {
-                      return StatCard(
-                        title: "Total Cash Out",
-                        value: _totalExpense,
-                        color: Colors.red,
-                        icon: Icons.trending_down_outlined,
+                      return Center(
+                          child: Container(
+                              width: double.infinity,
+                              height: 100,
+                              color: Colors.white ,
+                              child: Center(
+                                child: Text("No Cash Out Found",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                              )
+                          )
                       );
                     }
                   },

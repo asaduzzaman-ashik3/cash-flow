@@ -10,11 +10,12 @@ class CashOutPdfView {
     final pdf = pw.Document();
 
     pdf.addPage(
-      pw.Page(
+      pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(30),
         build: (pw.Context context) {
-          return pw.Column(
+          return [
+          pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               // Header
@@ -31,7 +32,7 @@ class CashOutPdfView {
                 style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
-              
+
               // Table
               pw.Table(
                 border: pw.TableBorder.all(),
@@ -73,7 +74,7 @@ class CashOutPdfView {
                       ),
                     ],
                   ),
-                  
+
                   // Data Rows
                   ...cashOutData.entries.map((entry) {
                     final value = _formatNumberForPdf(entry.value);
@@ -109,7 +110,7 @@ class CashOutPdfView {
                       ],
                     );
                   }),
-                  
+
                   // Total Row
                   pw.TableRow(
                     children: [
@@ -150,7 +151,8 @@ class CashOutPdfView {
                 ],
               ),
             ],
-          );
+          ),
+          ];
         },
       ),
     );
