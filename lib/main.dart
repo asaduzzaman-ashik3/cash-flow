@@ -437,7 +437,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: const Icon(
                                       Icons.trending_up_outlined,
                                       size: 15,
-                                      color: Colors.green,
+                                      color: Colors.teal,
                                     ),
                                   ),
                                 ),
