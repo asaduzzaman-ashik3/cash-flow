@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
-import '../widgets/cash_in_pdf_view.dart'; // Import the separate PDF view widget
+import '../widgets/cash_in_pdf_view.dart';
 
 class CashInFlowDetails extends StatefulWidget {
   const CashInFlowDetails({super.key});

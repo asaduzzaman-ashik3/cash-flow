@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
 import 'package:cash_flow/widgets/cash_out_pdf_view.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
+
 
 class CashOutFlowDetails extends StatefulWidget {
   const CashOutFlowDetails({super.key});
