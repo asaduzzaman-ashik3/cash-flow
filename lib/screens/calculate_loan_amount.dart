@@ -189,7 +189,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Calculate Loan Amount")),
-      body: SingleChildScrollView(
+      body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -216,11 +216,11 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     const SizedBox(height: 8),
                     Text(
                       'Where:\n'
-                      'A = Loan Amount\n'
-                      'E = Loan Repayment Capacity (40% of Net Earning)\n'
-                      'n = Number of Installments (User Input)\n'
-                      'N = Loan Term in Months (User Input)\n'
-                      'r = Yearly Interest Rate (User Input)',
+                          'A = Loan Amount\n'
+                          'E = Loan Repayment Capacity (40% of Net Earning)\n'
+                          'n = Number of Installments (User Input)\n'
+                          'N = Loan Term in Months (User Input)\n'
+                          'r = Yearly Interest Rate (User Input)',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[700],
@@ -230,7 +230,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
 
               Container(
                 padding: const EdgeInsets.all( 12),
@@ -257,7 +257,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 ),
               ),
               const SizedBox(height: 12),
-              
+
               // Loan Repayment Capacity (E) Display
               Container(
                 padding: const EdgeInsets.all(12),
@@ -284,7 +284,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Loan Term Input Field
               TextField(
                 controller: _loanTermController,
@@ -308,7 +308,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 onChanged: (_) => _calculateLoanAmount(),
               ),
               const SizedBox(height: 12),
-              
+
               // Number of Installments Input Field
               TextField(
                 controller: _numberOfInstallmentsController,
@@ -355,50 +355,50 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                 onChanged: (_) => _calculateLoanAmount(),
               ),
               const SizedBox(height: 20),
-              
+
               // Calculated Loan Amount Display
               Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: _calculatedLoanAmount != "0" ? Colors.teal[50] : Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: _calculatedLoanAmount != "0" 
-                          ? Colors.teal[300]!
-                          : Colors.grey[300]!,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Calculated Loan Amount (A):',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _calculatedLoanAmount != "0" 
-                            ? '৳ $_calculatedLoanAmount'
-                            : 'Not Available',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: _calculatedLoanAmount != "0" 
-                              ? Colors.teal
-                              : Colors.grey,
-                        ),
-                      ),
-                    ],
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: _calculatedLoanAmount != "0" ? Colors.teal[50] : Colors.grey[100],
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: _calculatedLoanAmount != "0"
+                        ? Colors.teal[300]!
+                        : Colors.grey[300]!,
                   ),
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Calculated Loan Amount (A):',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _calculatedLoanAmount != "0"
+                          ? '৳ $_calculatedLoanAmount'
+                          : 'Not Available',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: _calculatedLoanAmount != "0"
+                            ? Colors.teal
+                            : Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }

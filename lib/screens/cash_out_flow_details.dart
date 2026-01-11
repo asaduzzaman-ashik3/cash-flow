@@ -61,7 +61,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
       appBar: AppBar(
         title: Text("Cash Out Flow Details"),
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -131,7 +131,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                   ],
                 ),
               ),
-              
+
               // Table Body
               Container(
                 decoration: BoxDecoration(
@@ -180,7 +180,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
                   }).toList(),
                 ),
               ),
-              
+
               // Total Row
               Container(
                 decoration: BoxDecoration(
@@ -234,7 +234,7 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }

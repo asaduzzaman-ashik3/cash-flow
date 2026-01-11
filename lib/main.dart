@@ -902,7 +902,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         backgroundColor: Colors.teal,
-        elevation: 10,
+        elevation: 5,
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,

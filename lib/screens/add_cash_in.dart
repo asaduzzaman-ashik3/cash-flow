@@ -404,7 +404,7 @@ class _AddCashInState extends State<AddCashIn> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -442,14 +442,14 @@ class _AddCashInState extends State<AddCashIn> {
               ),
               const SizedBox(width: 8),
               _buildTextField('Others', _othersController),
-              
+
               // Dynamic fields section
               if (_dynamicLabels.isNotEmpty) ...[
                 ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
               ],
-              
+
               const SizedBox(height: 10),
-              
+
 
 
               Padding(
@@ -494,7 +494,7 @@ class _AddCashInState extends State<AddCashIn> {
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }

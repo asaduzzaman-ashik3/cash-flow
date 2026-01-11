@@ -407,7 +407,7 @@ class _AddCashOutState extends State<AddCashOut> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -532,14 +532,14 @@ class _AddCashOutState extends State<AddCashOut> {
                   ),
                 ],
               ),
-              
+
               // Dynamic fields section
               if (_dynamicLabels.isNotEmpty) ...[
                 ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
               ],
-              
+
               const SizedBox(height: 10),
-              
+
 
 
               Padding(
@@ -587,7 +587,7 @@ class _AddCashOutState extends State<AddCashOut> {
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }

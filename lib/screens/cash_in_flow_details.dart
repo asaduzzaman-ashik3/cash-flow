@@ -56,7 +56,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
       appBar: AppBar(
         title: Text("Cash In Flow Details"),
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -128,7 +128,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                   ],
                 ),
               ),
-              
+
               // Table Body
               Container(
                 decoration: BoxDecoration(
@@ -177,7 +177,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                   }).toList(),
                 ),
               ),
-              
+
               // Total Row
               Container(
                 decoration: BoxDecoration(
@@ -231,7 +231,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }
