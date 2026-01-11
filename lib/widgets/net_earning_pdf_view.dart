@@ -39,39 +39,143 @@ class NetEarningPdfView {
               pw.SizedBox(height: 20),
               
               // Table with Cash In and Cash Out
-              pw.Table.fromTextArray(
-                headers: ['CASH IN FLOW (EARN)', 'Amount', 'CASH OUT FLOW (EXPENSE)', 'Amount'],
-                data: [
-                  // Add all cash in and cash out items
-                  ..._combineCashInAndOut(cashInData, cashOutData),
-                ],
+              pw.Table(
                 border: pw.TableBorder.all(),
-                headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                cellHeight: 30,
-                cellAlignments: {
-                  0: pw.Alignment.centerLeft,
-                  1: pw.Alignment.centerRight,
-                  2: pw.Alignment.centerLeft,
-                  3: pw.Alignment.centerRight,
-                },
-              ),
-              
-              pw.SizedBox(height: 20),
-              
-              // Totals table
-              pw.Table.fromTextArray(
-                data: [
-                  ['Total Cash In', _formatNumberForPdf(totalCashIn.toString()), 'Total Cash Out', _formatNumberForPdf(totalCashOut.toString())],
-                  ['Net Earning', _formatNumberForPdf(netEarning.toString()), '', ''],
+                children: [
+                  // Header Row
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'CASH IN FLOW (EARN)',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Amount',
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'CASH OUT FLOW (EXPENSE)',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Amount',
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  // Data Rows
+                  ..._buildCashInAndOutRows(cashInData, cashOutData),
+                  
+                  // Totals Row
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Total Cash In',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumberForPdf(totalCashIn.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Total Cash Out',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumberForPdf(totalCashOut.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  // Net Earning Row
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Net Earning',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumberForPdf(netEarning.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(''),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(''),
+                      ),
+                    ],
+                  ),
                 ],
-                border: pw.TableBorder.all(),
-                cellHeight: 30,
-                cellAlignments: {
-                  0: pw.Alignment.centerLeft,
-                  1: pw.Alignment.centerRight,
-                  2: pw.Alignment.centerLeft,
-                  3: pw.Alignment.centerRight,
-                },
               ),
             ],
           );
@@ -84,10 +188,10 @@ class NetEarningPdfView {
     );
   }
 
-  // Helper function to combine cash in and cash out data
-  static List<List<String>> _combineCashInAndOut(Map<String, String> cashInData, Map<String, String> cashOutData) {
+  // Helper function to build cash in and cash out rows
+  static List<pw.TableRow> _buildCashInAndOutRows(Map<String, String> cashInData, Map<String, String> cashOutData) {
     final maxRows = cashInData.length > cashOutData.length ? cashInData.length : cashOutData.length;
-    final List<List<String>> result = [];
+    final List<pw.TableRow> result = [];
     
     final cashInEntries = cashInData.entries.toList();
     final cashOutEntries = cashOutData.entries.toList();
@@ -108,7 +212,40 @@ class NetEarningPdfView {
         cashOutAmount = _formatNumberForPdf(cashOutEntries[i].value);
       }
       
-      result.add([cashInLabel, cashInAmount, cashOutLabel, cashOutAmount]);
+      result.add(pw.TableRow(
+        children: [
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInLabel,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInAmount,
+              textAlign: pw.TextAlign.right,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutLabel,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutAmount,
+              textAlign: pw.TextAlign.right,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+        ],
+      ));
     }
     
     return result;
