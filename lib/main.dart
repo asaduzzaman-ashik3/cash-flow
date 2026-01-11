@@ -393,7 +393,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   child: Column(
-                    spacing: 5,
                     children: [
                       Text(
                         "Net Income",
@@ -885,6 +884,18 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.teal,
+        elevation: 6,
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
