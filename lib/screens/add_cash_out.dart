@@ -277,7 +277,7 @@ class _AddCashOutState extends State<AddCashOut> {
   // Add a new dynamic field from modal
   void _addDynamicFieldFromModal() {
     String label = _modalLabelController.text.trim();
-    String hint = _modalHintController.text.trim();
+    _modalHintController.text.trim();
     
     if (label.isNotEmpty) {
       setState(() {
@@ -298,14 +298,14 @@ class _AddCashOutState extends State<AddCashOut> {
     }
   }
 
-  // Remove a dynamic field
-  void _removeDynamicField(int index) {
-    setState(() {
-      _dynamicValueControllers.removeAt(index);
-      _dynamicLabels.removeAt(index);
-      _dynamicFieldNames.removeAt(index);
-    });
-  }
+  // // Remove a dynamic field
+  // void _removeDynamicField(int index) {
+  //   setState(() {
+  //     _dynamicValueControllers.removeAt(index);
+  //     _dynamicLabels.removeAt(index);
+  //     _dynamicFieldNames.removeAt(index);
+  //   });
+  // }
 
   @override
   void dispose() {
