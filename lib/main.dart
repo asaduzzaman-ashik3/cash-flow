@@ -6,7 +6,6 @@ import 'package:cash_flow/screens/cash_out_flow_details.dart';
 import 'package:cash_flow/screens/net_earning_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'widgets/stat_card.dart';
 
 void main() {
@@ -431,9 +430,9 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white, 
         title: Text(_currentIndex == 0 ? widget.title : [
           'Home',
-          'Cash In Flow',
-          'Cash Out Flow',
-          'Net Earning'
+          'Cash In Flow List',
+          'Cash Out Flow List',
+          'Net Income List'
         ][_currentIndex]),
       ),
       body: currentScreen,
