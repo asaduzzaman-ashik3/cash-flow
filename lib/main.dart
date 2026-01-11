@@ -282,19 +282,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // Load static expenses
       for (final entry in expenseCategories.entries) {
         final value = double.tryParse(prefs.getString(entry.key) ?? '') ?? 0.0;
-        if (value > 0) { // Only add if there's a value
+        if (value > 0) {
+          // Only add if there's a value
           expenses[entry.value] = value;
         }
       }
 
       // Load dynamic cash out fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      final dynamicFieldsJson =
+          prefs.getStringList('dynamic_cash_out_fields') ?? [];
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          final value = double.tryParse(prefs.getString('dynamic_cash_out_field_\$label') ?? '') ?? 0.0;
-          if (value > 0) { // Only add if there's a value
+          final value =
+              double.tryParse(
+                prefs.getString('dynamic_cash_out_field_\$label') ?? '',
+              ) ??
+              0.0;
+          if (value > 0) {
+            // Only add if there's a value
             expenses[label] = value;
           }
         }
@@ -324,19 +331,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // Load static cash in values
       for (final entry in cashInCategories.entries) {
         final value = double.tryParse(prefs.getString(entry.key) ?? '') ?? 0.0;
-        if (value > 0) { // Only add if there's a value
+        if (value > 0) {
+          // Only add if there's a value
           cashIns[entry.value] = value;
         }
       }
 
       // Load dynamic cash in fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      final dynamicFieldsJson =
+          prefs.getStringList('dynamic_cash_in_fields') ?? [];
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          final value = double.tryParse(prefs.getString('dynamic_cash_in_field_\$label') ?? '') ?? 0.0;
-          if (value > 0) { // Only add if there's a value
+          final value =
+              double.tryParse(
+                prefs.getString('dynamic_cash_in_field_\$label') ?? '',
+              ) ??
+              0.0;
+          if (value > 0) {
+            // Only add if there's a value
             cashIns[label] = value;
           }
         }
@@ -367,7 +381,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   padding: EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(34),
+                    borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -385,12 +399,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         "Net Income",
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        _netEarning,
+                        "৳ $_netEarning",
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -410,16 +424,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                     sigmaY: 10,
                                   ),
                                   child: Container(
-                                    width: 35,
-                                    height: 35,
+                                    width: 25,
+                                    height: 25,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.4),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.4,
+                                      ),
                                       // glass effect
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
                                       Icons.trending_up_outlined,
+                                      size: 15,
                                       color: Colors.green,
                                     ),
                                   ),
@@ -438,7 +455,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Text(
-                                    _totalEarn,
+                                    "৳ $_totalEarn",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -458,15 +475,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                     sigmaY: 10,
                                   ),
                                   child: Container(
-                                    width: 35,
-                                    height: 35,
+                                    width: 25,
+                                    height: 25,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.4),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.4,
+                                      ),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
                                       Icons.trending_down_outlined,
+                                      size: 15,
                                       color: Colors.red,
                                     ),
                                   ),
@@ -485,7 +505,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Text(
-                                    _totalExpense,
+                                    "৳ $_totalExpense",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -500,16 +520,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
-                
+                SizedBox(height: 10),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  Text("Cash In",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                  Text("View All",style: TextStyle(color: Colors.grey), )
+                    Text(
+                      "Cash In",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CashInFlowDetails(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "View All",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   ],
                 ),
-                                
+
                 // Individual cash in items
                 FutureBuilder<Map<String, double>>(
                   future: _getAllCashInData(),
@@ -543,8 +582,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Cash Out",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                    Text("View All",style: TextStyle(color: Colors.grey), )
+                    Text(
+                      "Cash Out",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    InkWell(
+                      onTap:() {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CashOutFlowDetails()));
+                      },
+                      child: Text(
+                        "View All",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   ],
                 ),
                 // Individual expense items
@@ -588,7 +641,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.cyan,
                   icon: Icons.payments_outlined,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -677,13 +730,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
         break;
-      case 1: // Cash In Flow Details
-        currentScreen = CashInFlowDetails();
-        break;
-      case 2: // Cash Out Flow Details
-        currentScreen = CashOutFlowDetails();
-        break;
-      case 3: // Net Earning Details
+      case 1:
         currentScreen = NetEarningDetails();
         break;
       default:
@@ -831,14 +878,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_up_outlined),
-            label: 'In List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_down_outlined),
-            label: 'Out List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate_outlined),
