@@ -637,128 +637,57 @@ class _MyHomePageState extends State<MyHomePage> {
         currentScreen = NetEarningDetails();
         break;
       default:
-        currentScreen = SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              spacing: 12,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CashInFlowDetails(),
-                      ),
-                    );
-                  },
-                  child: StatCard(
-                    title: "Total Earn",
-                    value: _totalEarn,
-                    color: Colors.green,
-                    icon: Icons.attach_money,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CashOutFlowDetails(),
-                      ),
-                    );
-                  },
-                  child: StatCard(
-                    title: "Total Expense",
-                    value: _totalExpense,
-                    color: Colors.red,
-                    icon: Icons.money_off,
-                  ),
-                ),
-                InkWell(
-                  child: StatCard(
-                    title: "Net Earning",
-                    value: _netEarning,
-                    color: Colors.orange,
-                    icon: Icons.trending_up,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NetEarningDetails(),
-                      ),
-                    );
-                  },
-                ),
-                StatCard(
-                  title: "Loan Repayment Capacity",
-                  value: _loanRepaymentCapacity,
-                  color: Colors.orange,
-                  icon: Icons.trending_up,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddCashIn(),
-                            ),
-                          );
-                          _loadAllTotals();
-                        },
-                        child: Text("Add Cash In Flow"),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddCashOut(),
-                            ),
-                          );
-                          _loadAllTotals();
-                        },
-                        child: Text("Add Cash Out Flow"),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await _loadAllTotals();
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CalculateLoanAmount(),
-                        ),
-                      );
-                      // Refresh to show calculated loan amount
-                      _loadAllTotals();
-                    },
-                    child: Text("Calculate Loan Amount"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        currentScreen = SizedBox.shrink();
     }
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 180, // enough space for avatar + column
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage('https://i.ibb.co/dhW5Hq5/7194090004403aefc5d79dc13316ef7c7d7bbafe.jpg'), // replace with your image
+                backgroundColor: Colors.grey[200],
+              ),
+              const SizedBox(width: 12),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Welcome',
+                    style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'John Doe',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        title: null, // remove the previous title
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_balance_outlined,color: Colors.teal,),
+            icon: const Icon(
+              Icons.account_balance_outlined,
+              color: Colors.teal,
+            ),
             onPressed: () async {
               await _loadAllTotals();
               await Navigator.push(
@@ -771,18 +700,8 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        backgroundColor: Colors.white,
-        title: Text(
-          _currentIndex == 0
-              ? widget.title
-              : [
-                  'Home',
-                  'Cash In Flow List',
-                  'Cash Out Flow List',
-                  'Net Income List',
-                ][_currentIndex],
-        ),
       ),
+
       body: currentScreen,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
