@@ -234,7 +234,7 @@ class _AddCashInState extends State<AddCashIn> {
               _buildTextField('Parent Salary', _fatherMotherSalaryController),
               _buildTextField('Savings Profit', _savingsEarnController),
               const SizedBox(width: 8),
-              _buildTextField('House Rent', _homeRentEarnController),
+              _buildTextField('House Rent Income', _homeRentEarnController),
 
               _buildTextField('Business Income', _businessEarnController),
               const SizedBox(width: 8),
