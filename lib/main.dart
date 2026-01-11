@@ -265,6 +265,90 @@ class _MyHomePageState extends State<MyHomePage> {
         );
   }
 
+  // Function to get all expense data
+  Future<Map<String, double>> _getAllExpenseData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      Map<String, double> expenses = {};
+
+      // Define all expense categories with their keys and display names
+      final expenseCategories = {
+        'expense_food': 'Food Expense',
+        'expense_house_rent': 'House Rent',
+        'expense_loan_installment': 'Loan Installment',
+        'expense_dps': 'DPS',
+      };
+
+      // Load static expenses
+      for (final entry in expenseCategories.entries) {
+        final value = double.tryParse(prefs.getString(entry.key) ?? '') ?? 0.0;
+        if (value > 0) { // Only add if there's a value
+          expenses[entry.value] = value;
+        }
+      }
+
+      // Load dynamic cash out fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          final value = double.tryParse(prefs.getString('dynamic_cash_out_field_\$label') ?? '') ?? 0.0;
+          if (value > 0) { // Only add if there's a value
+            expenses[label] = value;
+          }
+        }
+      }
+
+      return expenses;
+    } catch (e) {
+      print('Error getting expense data: \$e');
+      return {};
+    }
+  }
+
+  // Function to get all cash in data
+  Future<Map<String, double>> _getAllCashInData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      Map<String, double> cashIns = {};
+
+      // Define all cash in categories with their keys and display names
+      final cashInCategories = {
+        'own_salary': 'Own Salary',
+        'husband_wife_salary': 'Spouse Salary',
+        'son_daughter_salary': 'Child Salary',
+        'father_mother_salary': 'Parent Salary',
+      };
+
+      // Load static cash in values
+      for (final entry in cashInCategories.entries) {
+        final value = double.tryParse(prefs.getString(entry.key) ?? '') ?? 0.0;
+        if (value > 0) { // Only add if there's a value
+          cashIns[entry.value] = value;
+        }
+      }
+
+      // Load dynamic cash in fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          final value = double.tryParse(prefs.getString('dynamic_cash_in_field_\$label') ?? '') ?? 0.0;
+          if (value > 0) { // Only add if there's a value
+            cashIns[label] = value;
+          }
+        }
+      }
+
+      return cashIns;
+    } catch (e) {
+      print('Error getting cash in data: \$e');
+      return {};
+    }
+  }
+
   int _currentIndex = 0;
 
   @override
@@ -416,18 +500,81 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-
-                StatCard(
-                  title: "Total Cash In",
-                  value: _totalEarn,
-                  color: Colors.green,
-                  icon: Icons.trending_up_outlined,
+                SizedBox(height: 10,),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  Text("Cash In",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                  Text("View All",style: TextStyle(color: Colors.grey), )
+                  ],
                 ),
-                StatCard(
-                  title: "Total Cash Out",
-                  value: _totalExpense,
-                  color: Colors.red,
-                  icon: Icons.trending_down_outlined,
+                                
+                // Individual cash in items
+                FutureBuilder<Map<String, double>>(
+                  future: _getAllCashInData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      final cashIns = snapshot.data!;
+                      return Column(
+                        children: cashIns.entries.map((entry) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 8),
+                            child: StatCard(
+                              title: entry.key,
+                              value: _formatNumber(entry.value),
+                              color: Colors.green,
+                              icon: Icons.trending_up_outlined,
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return StatCard(
+                        title: "Total Cash In",
+                        value: _totalEarn,
+                        color: Colors.green,
+                        icon: Icons.trending_up_outlined,
+                      );
+                    }
+                  },
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Cash Out",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                    Text("View All",style: TextStyle(color: Colors.grey), )
+                  ],
+                ),
+                // Individual expense items
+                FutureBuilder<Map<String, double>>(
+                  future: _getAllExpenseData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      final expenses = snapshot.data!;
+                      return Column(
+                        children: expenses.entries.map((entry) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 8),
+                            child: StatCard(
+                              title: entry.key,
+                              value: _formatNumber(entry.value),
+                              color: Colors.red,
+                              icon: Icons.trending_down_outlined,
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return StatCard(
+                        title: "Total Cash Out",
+                        value: _totalExpense,
+                        color: Colors.red,
+                        icon: Icons.trending_down_outlined,
+                      );
+                    }
+                  },
                 ),
                 StatCard(
                   title: "Net Income",
@@ -441,7 +588,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.cyan,
                   icon: Icons.payments_outlined,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
