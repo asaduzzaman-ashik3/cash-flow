@@ -1,8 +1,5 @@
 import 'package:cash_flow/widgets/net_earning_pdf_view.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
 
 class NetEarningDetails extends StatefulWidget {
   const NetEarningDetails({super.key});

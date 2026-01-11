@@ -1,7 +1,4 @@
 import 'dart:ui';
-
-import 'package:cash_flow/screens/add_cash_in.dart';
-import 'package:cash_flow/screens/add_cash_out.dart';
 import 'package:cash_flow/screens/calculate_loan_amount.dart';
 import 'package:cash_flow/screens/cash_in_flow_details.dart';
 import 'package:cash_flow/screens/cash_out_flow_details.dart';
@@ -44,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String _totalEarn = "0";
   String _totalExpense = "0";
   String _netEarning = "0";
-  String _loanRepaymentCapacity = "0";
 
   @override
   void initState() {
@@ -81,9 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ? _formatNumber(totalExpense)
           : "Not Added";
       _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Added";
-      _loanRepaymentCapacity = loanRepaymentCapacity > 0
-          ? _formatNumber(loanRepaymentCapacity)
-          : "Not Added";
     });
   }
 
@@ -310,7 +303,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       return expenses;
     } catch (e) {
-      print('Error getting expense data: \$e');
       return {};
     }
   }
@@ -359,7 +351,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       return cashIns;
     } catch (e) {
-      print('Error getting cash in data: \$e');
       return {};
     }
   }
@@ -371,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget currentScreen;
 
     switch (_currentIndex) {
-      case 0: // Home
+      case 0:
         currentScreen = SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20),
@@ -552,7 +543,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
 
-                // Individual cash in items
                 FutureBuilder<Map<String, double>>(
                   future: _getAllCashInData(),
                   builder: (context, snapshot) {
