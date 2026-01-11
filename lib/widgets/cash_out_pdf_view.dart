@@ -23,28 +23,27 @@ class CashOutPdfView {
                 style: pw.TextStyle(
                   fontSize: 24,
                   fontWeight: pw.FontWeight.bold,
-                  color: PdfColors.red,
                 ),
               ),
               pw.SizedBox(height: 10),
               pw.Text(
                 'Generated on: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+                style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
               
               // Table
               pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.grey300),
+                border: pw.TableBorder.all(),
                 children: [
                   // Header Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(color: PdfColors.red50),
+                    decoration: const pw.BoxDecoration(),
                     children: [
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
-                          'Category',
+                          'Category Name',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
@@ -90,11 +89,11 @@ class CashOutPdfView {
                         ),
                       ],
                     );
-                  }).toList(),
+                  }),
                   
                   // Total Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(color: PdfColors.red50),
+                    decoration: const pw.BoxDecoration(),
                     children: [
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
@@ -103,7 +102,6 @@ class CashOutPdfView {
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
-                            color: PdfColors.red900,
                           ),
                         ),
                       ),
@@ -115,7 +113,6 @@ class CashOutPdfView {
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
-                            color: PdfColors.red900,
                           ),
                         ),
                       ),

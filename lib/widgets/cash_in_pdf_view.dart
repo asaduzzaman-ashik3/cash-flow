@@ -45,7 +45,7 @@ class CashInPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
-                          'Category',
+                          'Category Name',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
