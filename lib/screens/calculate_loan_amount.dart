@@ -293,7 +293,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 decoration: InputDecoration(
-                  labelText: 'Loan Term (N) - Months',
+                  labelText: 'Loan Term - Months (N)',
                   hintText: 'Enter loan term in months',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -327,16 +327,6 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: 12,
                     horizontal: 12,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.auto_fix_high),
-                    tooltip: 'Use loan term value',
-                    onPressed: () {
-                      if (_loanTermController.text.isNotEmpty) {
-                        _numberOfInstallmentsController.text = _loanTermController.text;
-                        _calculateLoanAmount();
-                      }
-                    },
                   ),
                 ),
                 onChanged: (_) => _calculateLoanAmount(),
