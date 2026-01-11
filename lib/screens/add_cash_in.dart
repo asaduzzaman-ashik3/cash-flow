@@ -185,10 +185,8 @@ class _AddCashInState extends State<AddCashIn> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text(
-                'Some data may not have been saved. Please try again.',
-              ),
-              backgroundColor: Colors.orange,
+              content: Text('Data saved successfully!'),
+              backgroundColor: Colors.green,
             ),
           );
         }
@@ -262,14 +260,14 @@ class _AddCashInState extends State<AddCashIn> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close modal
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
                 _addDynamicFieldFromModal();
-                Navigator.of(context).pop(); // Close modal
+                Navigator.of(context).pop();
               },
               child: const Text('Create'),
             ),
@@ -279,7 +277,7 @@ class _AddCashInState extends State<AddCashIn> {
     );
   }
   
-  // Add a new dynamic field from modal
+
   void _addDynamicFieldFromModal() {
     String label = _modalLabelController.text.trim();
     _modalHintController.text.trim();

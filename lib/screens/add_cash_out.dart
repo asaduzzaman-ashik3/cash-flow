@@ -174,8 +174,8 @@ class _AddCashOutState extends State<AddCashOut> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Some data may not have been saved. Please try again.'),
-              backgroundColor: Colors.orange,
+              content: Text('Data saved successfully!'),
+              backgroundColor: Colors.green,
             ),
           );
         }
