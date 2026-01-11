@@ -58,13 +58,15 @@ class _CashOutFlowDetailsState extends State<CashOutFlowDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Cash Out Flow Details"),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // PDF Action Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(

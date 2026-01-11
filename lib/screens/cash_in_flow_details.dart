@@ -53,6 +53,9 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Cash In Flow Details"),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
