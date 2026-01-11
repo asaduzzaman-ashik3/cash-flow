@@ -23,23 +23,24 @@ class CashInPdfView {
                 style: pw.TextStyle(
                   fontSize: 24,
                   fontWeight: pw.FontWeight.bold,
-                  color: PdfColors.blue,
                 ),
               ),
               pw.SizedBox(height: 10),
               pw.Text(
                 'Generated on: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+                style: pw.TextStyle(fontSize: 10, color: PdfColors.black),
               ),
               pw.SizedBox(height: 20),
               
               // Table
               pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.grey300),
+                border: pw.TableBorder.all(color: PdfColors.black),
                 children: [
                   // Header Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(color: PdfColors.blue50),
+                    decoration: const pw.BoxDecoration(
+
+                    ),
                     children: [
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
@@ -94,7 +95,7 @@ class CashInPdfView {
                   
                   // Total Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(color: PdfColors.green50),
+                    decoration: const pw.BoxDecoration(),
                     children: [
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
@@ -103,7 +104,6 @@ class CashInPdfView {
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
-                            color: PdfColors.green900,
                           ),
                         ),
                       ),
@@ -115,7 +115,6 @@ class CashInPdfView {
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
-                            color: PdfColors.green900,
                           ),
                         ),
                       ),
