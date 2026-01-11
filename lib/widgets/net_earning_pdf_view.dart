@@ -16,11 +16,12 @@ class NetEarningPdfView {
     final pdf = pw.Document();
 
     pdf.addPage(
-      pw.Page(
+      pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(30),
         build: (pw.Context context) {
-          return pw.Column(
+          return [
+          pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               // Header
@@ -37,7 +38,7 @@ class NetEarningPdfView {
                 style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
-              
+
               // Main Table with Cash In and Cash Out
               pw.Table(
                 border: pw.TableBorder.all(),
@@ -111,10 +112,10 @@ class NetEarningPdfView {
                       ),
                     ],
                   ),
-                  
+
                   // Data Rows with numbering
                   ..._buildCashInAndOutRowsWithNumbers(cashInData, cashOutData),
-                  
+
                   // Totals Row
                   pw.TableRow(
                     children: [
@@ -186,9 +187,9 @@ class NetEarningPdfView {
                   ),
                 ],
               ),
-              
+
               pw.SizedBox(height: 20),
-              
+
               // Separate Net Earning Section
               pw.Container(
                 padding: const pw.EdgeInsets.all(10),
@@ -216,7 +217,8 @@ class NetEarningPdfView {
                 ),
               ),
             ],
-          );
+          )
+          ];
         },
       ),
     );
