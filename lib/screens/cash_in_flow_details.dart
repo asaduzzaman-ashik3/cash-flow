@@ -3,8 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
@@ -232,45 +230,6 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     );
   }
 
-  Future<void> _downloadPdf() async {
-    try {
-      final pdfBytes = await _generatePdf();
-      final output = await getTemporaryDirectory();
-      final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      final file = File('${output.path}/cash_in_flow_$timestamp.pdf');
-      
-      await file.writeAsBytes(pdfBytes);
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('PDF saved to: ${file.path}'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-            action: SnackBarAction(
-              label: 'Open',
-              textColor: Colors.white,
-              onPressed: () async {
-                await Printing.layoutPdf(
-                  onLayout: (PdfPageFormat format) async => pdfBytes,
-                );
-              },
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving PDF: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      debugPrint('Error downloading PDF: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

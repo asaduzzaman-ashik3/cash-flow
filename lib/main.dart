@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: const MyHomePage(title: 'Cash Flow'),
+      home: const MyHomePage(title: 'Home'),
     );
   }
 }
@@ -198,19 +198,19 @@ class _MyHomePageState extends State<MyHomePage> {
               spacing: 12,
               children: [
                 StatCard(
-                  title: "Total Earn",
+                  title: "Total Cash In",
                   value: _totalEarn,
                   color: Colors.green,
                   icon: Icons.trending_up_outlined,
                 ),
                 StatCard(
-                  title: "Total Expense",
+                  title: "Total Cash Out",
                   value: _totalExpense,
                   color: Colors.red,
                   icon: Icons.trending_down_outlined,
                 ),
                 StatCard(
-                  title: "Net Earning",
+                  title: "Net Income",
                   value: _netEarning,
                   color: Colors.orange,
                   icon: Icons.account_balance_wallet_outlined,
@@ -244,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add),
-                              Text("Add Earning")
+                              Text("Add Cash In")
                             ],
                           ),
                         ),
@@ -270,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add),
-                              Text("Add Expense")
+                              Text("Add Cash Out")
                             ],
                           ),
                         ),
@@ -452,11 +452,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up_outlined),
-            label: 'Earning List',
+            label: 'In List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_down_outlined),
-            label: 'Expense List',
+            label: 'Out List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate_outlined),
