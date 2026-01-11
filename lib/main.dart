@@ -590,8 +590,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     InkWell(
-                      onTap:() {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CashOutFlowDetails()));
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CashOutFlowDetails(),
+                          ),
+                        );
                       },
                       child: Text(
                         "View All",
@@ -644,14 +649,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leadingWidth: 180, // enough space for avatar + column
+        leadingWidth: 180,
+        // enough space for avatar + column
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Row(
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage('https://i.ibb.co/dhW5Hq5/7194090004403aefc5d79dc13316ef7c7d7bbafe.jpg'), // replace with your image
+                backgroundImage: NetworkImage(
+                  'https://i.ibb.co/dhW5Hq5/7194090004403aefc5d79dc13316ef7c7d7bbafe.jpg',
+                ),
+                // replace with your image
                 backgroundColor: Colors.grey[200],
               ),
               const SizedBox(width: 12),
@@ -681,7 +690,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        title: null, // remove the previous title
+        title: null,
+        // remove the previous title
         actions: [
           IconButton(
             icon: const Icon(
@@ -692,9 +702,7 @@ class _MyHomePageState extends State<MyHomePage> {
               await _loadAllTotals();
               await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => CalculateLoanAmount(),
-                ),
+                MaterialPageRoute(builder: (context) => CalculateLoanAmount()),
               );
               _loadAllTotals();
             },
@@ -741,11 +749,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.teal,
         elevation: 5,
         shape: const CircleBorder(),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 28,
-        ),
+        child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
