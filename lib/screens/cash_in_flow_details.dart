@@ -123,7 +123,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                 style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
               ),
               pw.SizedBox(height: 20),
-              
+
               // Table
               pw.Table(
                 border: pw.TableBorder.all(color: PdfColors.grey300),
@@ -155,7 +155,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                       ),
                     ],
                   ),
-                  
+
                   // Data Rows
                   ..._cashInData.entries.map((entry) {
                     final value = entry.value.isEmpty || entry.value == '0'
@@ -184,7 +184,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                       ],
                     );
                   }).toList(),
-                  
+
                   // Total Row
                   pw.TableRow(
                     decoration: const pw.BoxDecoration(color: PdfColors.green50),
@@ -275,63 +275,30 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cash In Flow Details"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.picture_as_pdf),
-            tooltip: 'View PDF',
-            onPressed: _viewPdf,
-          ),
-          IconButton(
-            icon: const Icon(Icons.download),
-            tooltip: 'Download PDF',
-            onPressed: _downloadPdf,
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // PDF Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
+                  SizedBox(
+                    width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _viewPdf,
                       icon: const Icon(Icons.picture_as_pdf),
                       label: const Text('View PDF'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.teal,
                         foregroundColor: Colors.white,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: _downloadPdf,
-                      icon: const Icon(Icons.download),
-                      label: const Text('Download PDF'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 20),
               // Table Header
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Colors.teal[50],
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -357,7 +324,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.blue[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -369,7 +336,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.blue[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
