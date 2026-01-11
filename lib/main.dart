@@ -543,7 +543,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Text(
                         "View All",
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
@@ -595,12 +595,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Text(
                         "View All",
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
                 ),
-                // Individual expense items
                 FutureBuilder<Map<String, double>>(
                   future: _getAllExpenseData(),
                   builder: (context, snapshot) {
@@ -628,47 +627,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     }
                   },
-                ),
-                StatCard(
-                  title: "Net Income",
-                  value: _netEarning,
-                  color: Colors.orange,
-                  icon: Icons.account_balance_wallet_outlined,
-                ),
-                StatCard(
-                  title: "Loan Repayment Capacity",
-                  value: _loanRepaymentCapacity,
-                  color: Colors.cyan,
-                  icon: Icons.payments_outlined,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyan,
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: () async {
-                      await _loadAllTotals();
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CalculateLoanAmount(),
-                        ),
-                      );
-                      _loadAllTotals();
-                    },
-                    child: Center(
-                      child: Row(
-                        spacing: 5,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.calculate_outlined),
-                          Text("Calculate Loan Amount"),
-                        ],
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),
@@ -798,6 +756,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_balance_outlined),
+            onPressed: () async {
+              await _loadAllTotals();
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CalculateLoanAmount(),
+                ),
+              );
+              _loadAllTotals();
+            },
+          ),
+        ],
         backgroundColor: Colors.white,
         title: Text(
           _currentIndex == 0
