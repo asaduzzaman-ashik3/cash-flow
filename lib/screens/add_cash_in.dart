@@ -30,10 +30,20 @@ class _AddCashInState extends State<AddCashIn> {
       TextEditingController();
   final TextEditingController _othersController = TextEditingController();
 
+  // Dynamic fields
+  List<TextEditingController> _dynamicControllers = [];
+  List<TextEditingController> _dynamicValueControllers = [];
+  List<String> _dynamicLabels = [];
+  List<String> _dynamicFieldNames = [];
+  
+  // Controller for new field name input
+  final TextEditingController _newFieldController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _loadSavedValues();
+    _loadDynamicFields();
   }
 
   Future<void> _loadSavedValues() async {
@@ -76,10 +86,42 @@ class _AddCashInState extends State<AddCashIn> {
     }
   }
 
+  Future<void> _loadDynamicFields() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      
+      setState(() {
+        // Clear existing dynamic fields
+        _dynamicControllers.clear();
+        _dynamicValueControllers.clear();
+        _dynamicLabels.clear();
+        _dynamicFieldNames.clear();
+
+        // Load dynamic fields
+        for (String fieldJson in dynamicFieldsJson) {
+          final parts = fieldJson.split('|');
+          if (parts.length >= 2) {
+            final label = parts[0];
+            final value = prefs.getString('dynamic_cash_in_field_$label') ?? '';
+            
+            _dynamicLabels.add(label);
+            _dynamicFieldNames.add('dynamic_cash_in_field_$label');
+            _dynamicControllers.add(TextEditingController(text: label));
+            _dynamicValueControllers.add(TextEditingController(text: value));
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('Error loading dynamic fields: $e');
+    }
+  }
+
   Future<void> _saveValues() async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
+      // Save static fields
       final saveResults = await Future.wait([
         prefs.setString('own_salary', _ownSalaryController.text.trim()),
         prefs.setString(
@@ -116,7 +158,23 @@ class _AddCashInState extends State<AddCashIn> {
         prefs.setString('others', _othersController.text.trim()),
       ]);
 
-      final allSaved = saveResults.every((result) => result == true);
+      // Save dynamic fields
+      List<String> dynamicFieldsJson = [];
+      List<Future<bool>> dynamicSaveResults = [];
+      
+      for (int i = 0; i < _dynamicLabels.length; i++) {
+        String label = _dynamicLabels[i];
+        String value = _dynamicValueControllers[i].text.trim();
+        
+        dynamicFieldsJson.add('$label|${DateTime.now().millisecondsSinceEpoch}');
+        dynamicSaveResults.add(prefs.setString('dynamic_cash_in_field_$label', value));
+      }
+      
+      await prefs.setStringList('dynamic_cash_in_fields', dynamicFieldsJson);
+      await Future.wait(dynamicSaveResults);
+
+      final allSaved = saveResults.every((result) => result == true) && 
+                       dynamicSaveResults.every((result) => result == true);
 
       if (mounted) {
         if (allSaved) {
@@ -165,6 +223,55 @@ class _AddCashInState extends State<AddCashIn> {
     _treeSellsEarnController.clear();
     _fruitSellEarnController.clear();
     _othersController.clear();
+    
+    // Clear dynamic fields
+    for (var controller in _dynamicValueControllers) {
+      controller.clear();
+    }
+  }
+
+  // Add a new dynamic field
+  void _addDynamicField() {
+    String fieldName = _newFieldController.text.trim();
+    if (fieldName.isNotEmpty && !_dynamicLabels.contains(fieldName)) {
+      setState(() {
+        _dynamicLabels.add(fieldName);
+        _dynamicFieldNames.add('dynamic_cash_in_field_$fieldName');
+        _dynamicControllers.add(TextEditingController(text: fieldName));
+        _dynamicValueControllers.add(TextEditingController());
+        _newFieldController.clear();
+      });
+    } else if (_dynamicLabels.contains(fieldName)) {
+      // Show snackbar if field name already exists
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Field name "$fieldName" already exists'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } else {
+      // Show snackbar if field name is empty
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a field name'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    }
+  }
+
+  // Remove a dynamic field
+  void _removeDynamicField(int index) {
+    setState(() {
+      _dynamicControllers.removeAt(index);
+      _dynamicValueControllers.removeAt(index);
+      _dynamicLabels.removeAt(index);
+      _dynamicFieldNames.removeAt(index);
+    });
   }
 
   @override
@@ -182,6 +289,15 @@ class _AddCashInState extends State<AddCashIn> {
     _treeSellsEarnController.dispose();
     _fruitSellEarnController.dispose();
     _othersController.dispose();
+    
+    // Dispose dynamic controllers
+    for (var controller in _dynamicControllers) {
+      controller.dispose();
+    }
+    for (var controller in _dynamicValueControllers) {
+      controller.dispose();
+    }
+    
     super.dispose();
   }
 
@@ -217,10 +333,75 @@ class _AddCashInState extends State<AddCashIn> {
     );
   }
 
+  Widget _buildDynamicField(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: TextField(
+              controller: _dynamicControllers[index],
+              decoration: InputDecoration(
+                labelText: 'Field Name',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                filled: true,
+                fillColor: Colors.grey[50],
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 2,
+            child: TextField(
+              controller: _dynamicValueControllers[index],
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              decoration: InputDecoration(
+                labelText: 'Amount',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                hintText: "৳ Amount",
+                filled: true,
+                fillColor: Colors.grey[50],
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            onPressed: () => _removeDynamicField(index),
+            icon: const Icon(Icons.remove, color: Colors.red),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Cash In Flow")),
+      appBar: AppBar(
+        title: const Text("Add Cash In Flow"),
+        actions: [
+          IconButton(
+            onPressed: _addDynamicField,
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -259,7 +440,59 @@ class _AddCashInState extends State<AddCashIn> {
               ),
               const SizedBox(width: 8),
               _buildTextField('Others', _othersController),
+              
+              // Dynamic fields section
+              if (_dynamicLabels.isNotEmpty) ...[
+                const Divider(height: 30),
+                const Text(
+                  'Dynamic Fields',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
+              ],
+              
               const SizedBox(height: 10),
+              
+              // New field name input section
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _newFieldController,
+                        decoration: InputDecoration(
+                          labelText: 'New Field Name',
+                          hintText: 'Enter field name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[50],
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: _addDynamicField,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                      child: const Text('Add Field'),
+                    ),
+                  ],
+                ),
+              ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

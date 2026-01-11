@@ -195,6 +195,17 @@ class CashOutPdfView {
       final garbageBill = prefs.getString('expense_garbage_bill') ?? '';
       final others = prefs.getString('expense_others') ?? '';
 
+      // Load dynamic fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      Map<String, String> dynamicFields = {};
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicFields[label] = prefs.getString('dynamic_cash_out_field_$label') ?? '';
+        }
+      }
+
       // Calculate total
       double total = 0.0;
       total += double.tryParse(food) ?? 0.0;
@@ -217,6 +228,11 @@ class CashOutPdfView {
       total += double.tryParse(serviceCharge) ?? 0.0;
       total += double.tryParse(garbageBill) ?? 0.0;
       total += double.tryParse(others) ?? 0.0;
+      
+      // Add dynamic fields to total
+      for (final value in dynamicFields.values) {
+        total += double.tryParse(value) ?? 0.0;
+      }
 
       return {
         'Food Expense': food,
@@ -239,6 +255,7 @@ class CashOutPdfView {
         'Service Charge': serviceCharge,
         'Garbage Bill': garbageBill,
         'Others': others,
+        ...dynamicFields, // Add all dynamic fields
       };
     } catch (e) {
       debugPrint('Error loading cash out data: $e');
@@ -271,6 +288,17 @@ class CashOutPdfView {
       final garbageBill = prefs.getString('expense_garbage_bill') ?? '';
       final others = prefs.getString('expense_others') ?? '';
 
+      // Load dynamic fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      Map<String, String> dynamicFields = {};
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicFields[label] = prefs.getString('dynamic_cash_out_field_$label') ?? '';
+        }
+      }
+
       // Calculate total
       double total = 0.0;
       total += double.tryParse(food) ?? 0.0;
@@ -293,6 +321,11 @@ class CashOutPdfView {
       total += double.tryParse(serviceCharge) ?? 0.0;
       total += double.tryParse(garbageBill) ?? 0.0;
       total += double.tryParse(others) ?? 0.0;
+      
+      // Add dynamic fields to total
+      for (final value in dynamicFields.values) {
+        total += double.tryParse(value) ?? 0.0;
+      }
 
       return total;
     } catch (e) {

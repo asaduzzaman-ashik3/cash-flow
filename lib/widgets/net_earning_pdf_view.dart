@@ -38,7 +38,7 @@ class NetEarningPdfView {
               ),
               pw.SizedBox(height: 20),
               
-              // Table with Cash In and Cash Out
+              // Main Table with Cash In and Cash Out
               pw.Table(
                 border: pw.TableBorder.all(),
                 children: [
@@ -184,57 +184,36 @@ class NetEarningPdfView {
                       ),
                     ],
                   ),
-                  
-                  // Net Earning Row
-                  pw.TableRow(
-                    children: [
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(
-                          '',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(
-                            fontWeight: pw.FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(
-                          'Net Earning',
-                          style: pw.TextStyle(
-                            fontWeight: pw.FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(
-                          _formatNumberForPdf(netEarning.toString()),
-                          textAlign: pw.TextAlign.right,
-                          style: pw.TextStyle(
-                            fontWeight: pw.FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(''),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(''),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(''),
-                      ),
-                    ],
-                  ),
                 ],
+              ),
+              
+              pw.SizedBox(height: 20),
+              
+              // Separate Net Earning Section
+              pw.Container(
+                padding: const pw.EdgeInsets.all(10),
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(),
+                ),
+                child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text(
+                      'NET EARNING',
+                      style: pw.TextStyle(
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    pw.Text(
+                      _formatNumberForPdf(netEarning.toString()),
+                      style: pw.TextStyle(
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -357,13 +336,13 @@ class NetEarningPdfView {
       final others = prefs.getString('others') ?? '';
 
       // Load dynamic fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
-      Map<String, String> dynamicFields = {};
-      for (String fieldJson in dynamicFieldsJson) {
+      final dynamicCashInFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      Map<String, String> dynamicCashInFields = {};
+      for (String fieldJson in dynamicCashInFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+          dynamicCashInFields[label] = prefs.getString('dynamic_cash_in_field_$label') ?? '';
         }
       }
 
@@ -382,8 +361,8 @@ class NetEarningPdfView {
       totalCashIn += double.tryParse(fruitsSale) ?? 0.0;
       totalCashIn += double.tryParse(others) ?? 0.0;
       
-      // Add dynamic fields to total
-      for (final value in dynamicFields.values) {
+      // Add dynamic cash in fields to total
+      for (final value in dynamicCashInFields.values) {
         totalCashIn += double.tryParse(value) ?? 0.0;
       }
 
@@ -409,6 +388,17 @@ class NetEarningPdfView {
       final garbageBill = prefs.getString('expense_garbage_bill') ?? '';
       final othersExpense = prefs.getString('expense_others') ?? '';
 
+      // Load dynamic fields
+      final dynamicCashOutFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      Map<String, String> dynamicCashOutFields = {};
+      for (String fieldJson in dynamicCashOutFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicCashOutFields[label] = prefs.getString('dynamic_cash_out_field_$label') ?? '';
+        }
+      }
+
       // Calculate Cash Out Total
       double totalCashOut = 0.0;
       totalCashOut += double.tryParse(food) ?? 0.0;
@@ -432,6 +422,11 @@ class NetEarningPdfView {
       totalCashOut += double.tryParse(garbageBill) ?? 0.0;
       totalCashOut += double.tryParse(othersExpense) ?? 0.0;
 
+      // Add dynamic cash out fields to total
+      for (final value in dynamicCashOutFields.values) {
+        totalCashOut += double.tryParse(value) ?? 0.0;
+      }
+
       // Calculate Net Earning
       final netEarning = totalCashIn - totalCashOut;
 
@@ -449,7 +444,7 @@ class NetEarningPdfView {
           'Trees/Plants Sale': treesPlantsSale,
           'Fruits Sale': fruitsSale,
           'Others': others,
-          ...dynamicFields,
+          ...dynamicCashInFields,
         },
         'cashOutData': {
           'Food Expense': food,
@@ -472,6 +467,7 @@ class NetEarningPdfView {
           'Service Charge': serviceCharge,
           'Garbage Bill': garbageBill,
           'Others': othersExpense,
+          ...dynamicCashOutFields,
         },
         'totalCashIn': totalCashIn,
         'totalCashOut': totalCashOut,

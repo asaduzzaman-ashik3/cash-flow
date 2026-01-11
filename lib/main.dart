@@ -82,8 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-
-
   Future<double> _calculateTotalEarn() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -115,6 +113,17 @@ class _MyHomePageState extends State<MyHomePage> {
           treeSellsEarn +
           fruitSellEarn +
           others;
+
+      // Add dynamic cash in fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          final value = double.tryParse(prefs.getString('dynamic_cash_in_field_$label') ?? '') ?? 0.0;
+          total += value;
+        }
+      }
 
       return total;
     } catch (e) {
@@ -168,6 +177,17 @@ class _MyHomePageState extends State<MyHomePage> {
           serviceCharge +
           garbageBill +
           others;
+
+      // Add dynamic cash out fields
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      for (String fieldJson in dynamicFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          final value = double.tryParse(prefs.getString('dynamic_cash_out_field_$label') ?? '') ?? 0.0;
+          total += value;
+        }
+      }
 
       return total;
     } catch (e) {
