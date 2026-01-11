@@ -389,7 +389,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Text(
                         "Net Income",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 17,
                           fontWeight: FontWeight.w400,
                           color: Colors.white,
                         ),
@@ -397,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Text(
                         "৳ $_netEarning",
                         style: TextStyle(
-                          fontSize: 36,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
