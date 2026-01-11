@@ -38,8 +38,18 @@ class CashOutPdfView {
                 children: [
                   // Header Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(),
                     children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
@@ -67,8 +77,17 @@ class CashOutPdfView {
                   // Data Rows
                   ...cashOutData.entries.map((entry) {
                     final value = _formatNumberForPdf(entry.value);
+                    int index = cashOutData.keys.toList().indexOf(entry.key) + 1;
                     return pw.TableRow(
                       children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8),
+                          child: pw.Text(
+                            index.toString(),
+                            textAlign: pw.TextAlign.center,
+                            style: const pw.TextStyle(fontSize: 10),
+                          ),
+                        ),
                         pw.Padding(
                           padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
@@ -93,8 +112,18 @@ class CashOutPdfView {
                   
                   // Total Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(),
                     children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
