@@ -33,13 +33,13 @@ class _AddCashOutState extends State<AddCashOut> {
   final TextEditingController _othersController = TextEditingController();
 
   // Dynamic fields
-  List<TextEditingController> _dynamicControllers = [];
   List<TextEditingController> _dynamicValueControllers = [];
   List<String> _dynamicLabels = [];
   List<String> _dynamicFieldNames = [];
   
-  // Controller for new field name input
-  final TextEditingController _newFieldController = TextEditingController();
+  // Controllers for modal inputs
+  final TextEditingController _modalLabelController = TextEditingController();
+  final TextEditingController _modalHintController = TextEditingController();
 
   @override
   void initState() {
@@ -95,7 +95,6 @@ class _AddCashOutState extends State<AddCashOut> {
       
       setState(() {
         // Clear existing dynamic fields
-        _dynamicControllers.clear();
         _dynamicValueControllers.clear();
         _dynamicLabels.clear();
         _dynamicFieldNames.clear();
@@ -109,7 +108,6 @@ class _AddCashOutState extends State<AddCashOut> {
             
             _dynamicLabels.add(label);
             _dynamicFieldNames.add('dynamic_cash_out_field_$label');
-            _dynamicControllers.add(TextEditingController(text: label));
             _dynamicValueControllers.add(TextEditingController(text: value));
           }
         }
@@ -225,33 +223,74 @@ class _AddCashOutState extends State<AddCashOut> {
     }
   }
 
-  // Add a new dynamic field
-  void _addDynamicField() {
-    String fieldName = _newFieldController.text.trim();
-    if (fieldName.isNotEmpty && !_dynamicLabels.contains(fieldName)) {
-      setState(() {
-        _dynamicLabels.add(fieldName);
-        _dynamicFieldNames.add('dynamic_cash_out_field_$fieldName');
-        _dynamicControllers.add(TextEditingController(text: fieldName));
-        _dynamicValueControllers.add(TextEditingController());
-        _newFieldController.clear();
-      });
-    } else if (_dynamicLabels.contains(fieldName)) {
-      // Show snackbar if field name already exists
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Field name "$fieldName" already exists'),
-            backgroundColor: Colors.orange,
+  // Show modal for adding a new dynamic field
+  void _showAddFieldModal() {
+    _modalLabelController.clear();
+    _modalHintController.text = "৳ Amount"; // Set default hint text
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Dynamic Input'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _modalLabelController,
+                decoration: const InputDecoration(
+                  labelText: 'Label',
+                  hintText: 'Enter field label',
+                ),
+                autofocus: true,
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _modalHintController,
+                decoration: const InputDecoration(
+                  labelText: 'Hint Text',
+                  hintText: '৳ Amount',
+                ),
+              ),
+            ],
           ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close modal
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addDynamicFieldFromModal();
+                Navigator.of(context).pop(); // Close modal
+              },
+              child: const Text('Create'),
+            ),
+          ],
         );
-      }
+      },
+    );
+  }
+  
+  // Add a new dynamic field from modal
+  void _addDynamicFieldFromModal() {
+    String label = _modalLabelController.text.trim();
+    String hint = _modalHintController.text.trim();
+    
+    if (label.isNotEmpty) {
+      setState(() {
+        _dynamicLabels.add(label);
+        _dynamicFieldNames.add('dynamic_cash_out_field_$label');
+        _dynamicValueControllers.add(TextEditingController());
+      });
     } else {
-      // Show snackbar if field name is empty
+      // Show snackbar if label is empty
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Please enter a field name'),
+            content: Text('Please enter a label'),
             backgroundColor: Colors.orange,
           ),
         );
@@ -262,7 +301,6 @@ class _AddCashOutState extends State<AddCashOut> {
   // Remove a dynamic field
   void _removeDynamicField(int index) {
     setState(() {
-      _dynamicControllers.removeAt(index);
       _dynamicValueControllers.removeAt(index);
       _dynamicLabels.removeAt(index);
       _dynamicFieldNames.removeAt(index);
@@ -293,9 +331,6 @@ class _AddCashOutState extends State<AddCashOut> {
     _othersController.dispose();
     
     // Dispose dynamic controllers
-    for (var controller in _dynamicControllers) {
-      controller.dispose();
-    }
     for (var controller in _dynamicValueControllers) {
       controller.dispose();
     }
@@ -337,56 +372,25 @@ class _AddCashOutState extends State<AddCashOut> {
   Widget _buildDynamicField(int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: _dynamicControllers[index],
-              decoration: InputDecoration(
-                labelText: 'Field Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                filled: true,
-                fillColor: Colors.grey[50],
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 12,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: _dynamicValueControllers[index],
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: InputDecoration(
-                labelText: 'Amount',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                hintText: "৳ Amount",
-                filled: true,
-                fillColor: Colors.grey[50],
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 12,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            onPressed: () => _removeDynamicField(index),
-            icon: const Icon(Icons.remove, color: Colors.red),
-          ),
+      child: TextField(
+        controller: _dynamicValueControllers[index],
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
         ],
+        decoration: InputDecoration(
+          labelText: _dynamicLabels[index],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          hintText: "৳ Amount",
+          filled: true,
+          fillColor: Colors.grey[50],
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 12,
+          ),
+        ),
       ),
     );
   }
@@ -398,7 +402,7 @@ class _AddCashOutState extends State<AddCashOut> {
         title: const Text("Add Cash Out Flow"),
         actions: [
           IconButton(
-            onPressed: _addDynamicField,
+            onPressed: _showAddFieldModal,
             icon: const Icon(Icons.add),
           ),
         ],
@@ -545,42 +549,7 @@ class _AddCashOutState extends State<AddCashOut> {
               
               const SizedBox(height: 10),
               
-              // New field name input section
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _newFieldController,
-                        decoration: InputDecoration(
-                          labelText: 'New Field Name',
-                          hintText: 'Enter field name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[50],
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: _addDynamicField,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      ),
-                      child: const Text('Add Field'),
-                    ),
-                  ],
-                ),
-              ),
+
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
