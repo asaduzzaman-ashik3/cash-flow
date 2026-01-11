@@ -54,7 +54,7 @@ class CashInPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
-                          'Amount (৳)',
+                          'Amount',
                           textAlign: pw.TextAlign.right,
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
@@ -162,13 +162,13 @@ class CashInPdfView {
       final others = prefs.getString('others') ?? '';
 
       // Load dynamic fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
       Map<String, String> dynamicFields = {};
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+          dynamicFields[label] = prefs.getString('dynamic_cash_in_field_$label') ?? '';
         }
       }
 
@@ -231,13 +231,13 @@ class CashInPdfView {
       final others = prefs.getString('others') ?? '';
 
       // Load dynamic fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
       Map<String, String> dynamicFields = {};
       for (String fieldJson in dynamicFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+          dynamicFields[label] = prefs.getString('dynamic_cash_in_field_$label') ?? '';
         }
       }
 

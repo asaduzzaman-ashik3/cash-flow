@@ -1,8 +1,5 @@
-import 'package:cash_flow/widgets/cash_in_pdf_view.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
+import '../widgets/cash_in_pdf_view.dart';
 
 class CashInFlowDetails extends StatefulWidget {
   const CashInFlowDetails({super.key});
@@ -31,7 +28,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     try {
       final cashInData = await CashInPdfView.loadCashInData();
       final total = await CashInPdfView.calculateTotalCashIn();
-
+      
       if (mounted) {
         setState(() {
           _cashInData = cashInData;
@@ -53,11 +50,6 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     );
   }
 
-  Future<void> _viewPdf() async {
-    await CashInPdfView.generateAndPrintPdf(_cashInData, _total);
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,11 +59,12 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // PDF Action Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: _viewPdf,
+                  onPressed: () {
+                    CashInPdfView.generateAndPrintPdf(_cashInData, _total);
+                  },
                   icon: const Icon(Icons.picture_as_pdf),
                   label: const Text('View PDF'),
                   style: ElevatedButton.styleFrom(
@@ -81,7 +74,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20,),
               // Table Header
               Container(
                 decoration: BoxDecoration(
@@ -211,7 +204,7 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.green[900],
+                              color: Colors.teal[900],
                             ),
                           ),
                         ),
@@ -239,3 +232,4 @@ class _CashInFlowDetailsState extends State<CashInFlowDetails> {
     );
   }
 }
+

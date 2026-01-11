@@ -351,44 +351,47 @@ class _AddCashOutState extends State<AddCashOut> {
               ),
               const SizedBox(height: 10),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _resetValues,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        backgroundColor: Colors.deepOrangeAccent,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _resetValues,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          backgroundColor: Colors.deepOrangeAccent,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Reset',
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
-                      child: const Text(
-                        'Reset',
-                        style: TextStyle(fontSize: 14),
-                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _saveValues,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        backgroundColor: Colors.teal,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _saveValues,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
-                      child: const Text(
-                        'Save',
-                        style: TextStyle(fontSize: 14),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

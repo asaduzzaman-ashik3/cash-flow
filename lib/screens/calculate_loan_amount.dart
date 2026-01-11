@@ -27,28 +27,48 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
     _yearlyInterestRateController.addListener(_onInputChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadSavedValues();
+      _checkRepaymentCapacity();
     });
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkRepaymentCapacity();
+    });
+  }
+
+  void _checkRepaymentCapacity() {
+    if (_repaymentCapacity <= 0) {
+      setState(() {
+        _calculatedLoanAmount = '0';
+      });
+    } else {
+
+      _calculateLoanAmount();
+    }
+  }
+
+  @override
   void dispose() {
+    // Reset the calculated loan amount when leaving the screen
+    _resetCalculatedAmount();
     _loanTermController.dispose();
     _numberOfInstallmentsController.dispose();
     _yearlyInterestRateController.dispose();
     super.dispose();
   }
 
-  void _onInputChanged() {
-    if (_repaymentCapacity > 0) {
-      _calculateLoanAmount();
-    }
+  void _resetCalculatedAmount() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('calculated_loan_amount', '0');
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    loadSavedValues();
+  void _onInputChanged() {
+    _calculateLoanAmount();
   }
+
 
   Future<void> loadSavedValues() async {
     try {
@@ -70,8 +90,8 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
       if (!mounted) return;
 
       setState(() {
-        _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Available";
-        _loadAffordability = loanAffordability > 0 ? _formatNumber(loanAffordability) : "Not Available";
+        _netEarning = netEarning > 0 ? _formatNumber(netEarning) : "Not Added";
+        _loadAffordability = loanAffordability > 0 ? _formatNumber(loanAffordability) : "Not Added";
         _calculatedLoanAmount = savedCalculatedAmount ?? '0';
 
         _loanTermController.text = savedLoanTerm ?? '';
@@ -89,11 +109,13 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
 
   void _calculateLoanAmount() {
     if (_repaymentCapacity <= 0) {
+      setState(() {
+        _calculatedLoanAmount = '0';
+      });
       return;
     }
 
     try {
-      // Get user input values
       final nValue = _numberOfInstallmentsController.text.trim();
       final rValue = _yearlyInterestRateController.text.trim();
       final nTermValue = _loanTermController.text.trim();
@@ -105,7 +127,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
         return;
       }
 
-      final E = _repaymentCapacity; // Loan Repayment Capacity
+      final E = _repaymentCapacity;
       final n = double.tryParse(nValue) ?? 0.0;
       final N = double.tryParse(nTermValue) ?? 0.0;
       final r = double.tryParse(rValue) ?? 0.0;
@@ -173,8 +195,8 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Formula Display
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.teal[50],
@@ -195,7 +217,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     Text(
                       'Where:\n'
                       'A = Loan Amount\n'
-                      'E = Loan Repayment Capacity (50% of Net Earning)\n'
+                      'E = Loan Repayment Capacity (40% of Net Earning)\n'
                       'n = Number of Installments (User Input)\n'
                       'N = Loan Term in Months (User Input)\n'
                       'r = Yearly Interest Rate (User Input)',
@@ -271,7 +293,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 decoration: InputDecoration(
-                  labelText: 'Loan Term (N) - Months',
+                  labelText: 'Loan Term - Months (N)',
                   hintText: 'Enter loan term in months',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -306,16 +328,6 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
                     vertical: 12,
                     horizontal: 12,
                   ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.auto_fix_high),
-                    tooltip: 'Use loan term value',
-                    onPressed: () {
-                      if (_loanTermController.text.isNotEmpty) {
-                        _numberOfInstallmentsController.text = _loanTermController.text;
-                        _calculateLoanAmount();
-                      }
-                    },
-                  ),
                 ),
                 onChanged: (_) => _calculateLoanAmount(),
               ),
@@ -324,7 +336,7 @@ class _CalculateLoanAmountState extends State<CalculateLoanAmount> {
               TextField(
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                 ],
                 controller: _yearlyInterestRateController,
                 decoration: InputDecoration(
