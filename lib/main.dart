@@ -8,6 +8,7 @@ import 'package:cash_flow/screens/cash_out_flow_details.dart';
 import 'package:cash_flow/screens/net_earning_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'widgets/add_in_out_modal.dart';
 import 'widgets/stat_card.dart';
 
 void main() {
@@ -893,75 +894,15 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
             builder: (BuildContext context) {
-              return SafeArea(child: Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Add New Entry',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AddCashIn()),
-                              ).then((_) => _loadAllTotals());
-                            },
-                            icon: Icon(Icons.trending_up, color: Colors.white),
-                            label: Text('Add Cash In', style: TextStyle(color: Colors.white)),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AddCashOut()),
-                              ).then((_) => _loadAllTotals());
-                            },
-                            icon: Icon(Icons.trending_down, color: Colors.white),
-                            label: Text('Add Cash Out', style: TextStyle(color: Colors.white)),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ));
+              return AddInOutModal(
+                onCashInAdded: _loadAllTotals,
+                onCashOutAdded: _loadAllTotals,
+              );
             },
           );
         },
         backgroundColor: Colors.teal,
-        elevation: 6,
+        elevation: 10,
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,
