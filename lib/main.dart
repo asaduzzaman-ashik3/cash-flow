@@ -387,9 +387,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFF25B1E6),
-                        Color(0xFFC868FD),
-                        Color(0xFFFA9270),
+                        Color(0xFF004D40), // Dark Teal
+                        Color(0xFF00695C), // Medium Dark Teal
+                        Color(0xFF00897B), // Slightly lighter teal
                       ],
                     ),
                   ),
@@ -428,8 +428,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     height: 25,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.4,
+                                      color: Colors.black.withValues(
+                                        alpha: 0.2,
                                       ),
                                       // glass effect
                                       shape: BoxShape.circle,
@@ -479,8 +479,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     height: 25,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.4,
+                                      color: Colors.black.withValues(
+                                        alpha: 0.2,
                                       ),
                                       shape: BoxShape.circle,
                                     ),
@@ -562,7 +562,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: StatCard(
                               title: entry.key,
                               value: _formatNumber(entry.value),
-                              color: Colors.green,
+                              color: Colors.teal,
                               icon: Icons.trending_up_outlined,
                             ),
                           );
@@ -572,7 +572,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return StatCard(
                         title: "Total Cash In",
                         value: _totalEarn,
-                        color: Colors.green,
+                        color: Colors.teal,
                         icon: Icons.trending_up_outlined,
                       );
                     }
@@ -758,7 +758,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_balance_outlined),
+            icon: const Icon(Icons.account_balance_outlined,color: Colors.teal,),
             onPressed: () async {
               await _loadAllTotals();
               await Navigator.push(
