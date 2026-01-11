@@ -32,10 +32,20 @@ class _AddCashOutState extends State<AddCashOut> {
   final TextEditingController _garbageBillController = TextEditingController();
   final TextEditingController _othersController = TextEditingController();
 
+  // Dynamic fields
+  List<TextEditingController> _dynamicValueControllers = [];
+  List<String> _dynamicLabels = [];
+  List<String> _dynamicFieldNames = [];
+  
+  // Controllers for modal inputs
+  final TextEditingController _modalLabelController = TextEditingController();
+  final TextEditingController _modalHintController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _loadSavedValues();
+    _loadDynamicFields();
   }
 
   Future<void> _loadSavedValues() async {
@@ -78,10 +88,40 @@ class _AddCashOutState extends State<AddCashOut> {
     }
   }
 
+  Future<void> _loadDynamicFields() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final dynamicFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      
+      setState(() {
+        // Clear existing dynamic fields
+        _dynamicValueControllers.clear();
+        _dynamicLabels.clear();
+        _dynamicFieldNames.clear();
+
+        // Load dynamic fields
+        for (String fieldJson in dynamicFieldsJson) {
+          final parts = fieldJson.split('|');
+          if (parts.length >= 2) {
+            final label = parts[0];
+            final value = prefs.getString('dynamic_cash_out_field_$label') ?? '';
+            
+            _dynamicLabels.add(label);
+            _dynamicFieldNames.add('dynamic_cash_out_field_$label');
+            _dynamicValueControllers.add(TextEditingController(text: value));
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('Error loading dynamic fields: $e');
+    }
+  }
+
   Future<void> _saveValues() async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
+      // Save static fields
       final saveResults = await Future.wait([
         prefs.setString('expense_food', _foodExpenseController.text.trim()),
         prefs.setString('expense_house_rent', _houseRentController.text.trim()),
@@ -105,7 +145,23 @@ class _AddCashOutState extends State<AddCashOut> {
         prefs.setString('expense_others', _othersController.text.trim()),
       ]);
 
-      final allSaved = saveResults.every((result) => result == true);
+      // Save dynamic fields
+      List<String> dynamicFieldsJson = [];
+      List<Future<bool>> dynamicSaveResults = [];
+      
+      for (int i = 0; i < _dynamicLabels.length; i++) {
+        String label = _dynamicLabels[i];
+        String value = _dynamicValueControllers[i].text.trim();
+        
+        dynamicFieldsJson.add('$label|${DateTime.now().millisecondsSinceEpoch}');
+        dynamicSaveResults.add(prefs.setString('dynamic_cash_out_field_$label', value));
+      }
+      
+      await prefs.setStringList('dynamic_cash_out_fields', dynamicFieldsJson);
+      await Future.wait(dynamicSaveResults);
+
+      final allSaved = saveResults.every((result) => result == true) && 
+                       dynamicSaveResults.every((result) => result == true);
       
       if (mounted) {
         if (allSaved) {
@@ -160,6 +216,95 @@ class _AddCashOutState extends State<AddCashOut> {
     _serviceChargeController.clear();
     _garbageBillController.clear();
     _othersController.clear();
+    
+    // Clear dynamic fields
+    for (var controller in _dynamicValueControllers) {
+      controller.clear();
+    }
+  }
+
+  // Show modal for adding a new dynamic field
+  void _showAddFieldModal() {
+    _modalLabelController.clear();
+    _modalHintController.text = "৳ Amount"; // Set default hint text
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Dynamic Input'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _modalLabelController,
+                decoration: const InputDecoration(
+                  labelText: 'Label',
+                  hintText: 'Enter field label',
+                ),
+                autofocus: true,
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _modalHintController,
+                decoration: const InputDecoration(
+                  labelText: 'Hint Text',
+                  hintText: '৳ Amount',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close modal
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addDynamicFieldFromModal();
+                Navigator.of(context).pop(); // Close modal
+              },
+              child: const Text('Create'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+  // Add a new dynamic field from modal
+  void _addDynamicFieldFromModal() {
+    String label = _modalLabelController.text.trim();
+    String hint = _modalHintController.text.trim();
+    
+    if (label.isNotEmpty) {
+      setState(() {
+        _dynamicLabels.add(label);
+        _dynamicFieldNames.add('dynamic_cash_out_field_$label');
+        _dynamicValueControllers.add(TextEditingController());
+      });
+    } else {
+      // Show snackbar if label is empty
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a label'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    }
+  }
+
+  // Remove a dynamic field
+  void _removeDynamicField(int index) {
+    setState(() {
+      _dynamicValueControllers.removeAt(index);
+      _dynamicLabels.removeAt(index);
+      _dynamicFieldNames.removeAt(index);
+    });
   }
 
   @override
@@ -184,6 +329,12 @@ class _AddCashOutState extends State<AddCashOut> {
     _serviceChargeController.dispose();
     _garbageBillController.dispose();
     _othersController.dispose();
+    
+    // Dispose dynamic controllers
+    for (var controller in _dynamicValueControllers) {
+      controller.dispose();
+    }
+    
     super.dispose();
   }
 
@@ -218,11 +369,43 @@ class _AddCashOutState extends State<AddCashOut> {
     );
   }
 
+  Widget _buildDynamicField(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      child: TextField(
+        controller: _dynamicValueControllers[index],
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        decoration: InputDecoration(
+          labelText: _dynamicLabels[index],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          hintText: "৳ Amount",
+          filled: true,
+          fillColor: Colors.grey[50],
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 12,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Cash Out Flow"),
+        actions: [
+          IconButton(
+            onPressed: _showAddFieldModal,
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -349,7 +532,15 @@ class _AddCashOutState extends State<AddCashOut> {
                   ),
                 ],
               ),
+              
+              // Dynamic fields section
+              if (_dynamicLabels.isNotEmpty) ...[
+                ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
+              ],
+              
               const SizedBox(height: 10),
+              
+
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -400,4 +591,3 @@ class _AddCashOutState extends State<AddCashOut> {
     );
   }
 }
-

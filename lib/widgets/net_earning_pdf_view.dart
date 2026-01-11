@@ -29,186 +29,171 @@ class NetEarningPdfView {
                 style: pw.TextStyle(
                   fontSize: 24,
                   fontWeight: pw.FontWeight.bold,
-                  color: PdfColors.orange,
                 ),
               ),
               pw.SizedBox(height: 10),
               pw.Text(
                 'Generated on: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+                style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
               
-              // Two Column Layout
-              pw.Row(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
+              // Main Table with Cash In and Cash Out
+              pw.Table(
+                border: pw.TableBorder.all(),
                 children: [
-                  // Left Column - Cash In Flow
-                  pw.Expanded(
-                    child: pw.Container(
-                      decoration: pw.BoxDecoration(
-                        border: pw.Border.all(color: PdfColors.grey300, width: 1),
+                  // Header Row
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          // Header
-                          pw.Container(
-                            width: double.infinity,
-                            padding: const pw.EdgeInsets.all(8),
-                            decoration: const pw.BoxDecoration(
-                              color: PdfColors.blue50,
-                            ),
-                            child: pw.Text(
-                              'CASH IN FLOW (EARN)',
-                              style: pw.TextStyle(
-                                fontSize: 12,
-                                fontWeight: pw.FontWeight.bold,
-                                color: PdfColors.blue900,
-                              ),
-                              textAlign: pw.TextAlign.center,
-                            ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'CASH IN FLOW (EARN)',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
                           ),
-                          // Header Row
-                          _buildTwoColumnRow(
-                            category: 'Category',
-                            amount: 'Amount',
-                            isHeader: true,
-                          ),
-                          // Cash In Data Rows
-                          ...cashInData.entries.map((entry) {
-                            final value = _formatNumberForPdf(entry.value);
-                            return _buildTwoColumnRow(
-                              category: entry.key,
-                              amount: value,
-                            );
-                          }).toList(),
-                          // Cash In Total
-                          pw.Container(
-                            width: double.infinity,
-                            padding: const pw.EdgeInsets.all(8),
-                            decoration: const pw.BoxDecoration(
-                              color: PdfColors.green50,
-                              border: pw.Border(
-                                top: pw.BorderSide(color: PdfColors.grey300, width: 1),
-                              ),
-                            ),
-                            child: pw.Row(
-                              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                              children: [
-                                pw.Text(
-                                  'Total Cash In',
-                                  style: pw.TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: pw.FontWeight.bold,
-                                    color: PdfColors.green900,
-                                  ),
-                                ),
-                                pw.Text(
-                                  _formatNumberForPdf(totalCashIn.toString()),
-                                  style: pw.TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: pw.FontWeight.bold,
-                                    color: PdfColors.green900,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Amount',
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'CASH OUT FLOW (EXPENSE)',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Amount',
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   
-                  pw.SizedBox(width: 10),
+                  // Data Rows with numbering
+                  ..._buildCashInAndOutRowsWithNumbers(cashInData, cashOutData),
                   
-                  pw.Expanded(
-                    child: pw.Container(
-                      decoration: pw.BoxDecoration(
-                        border: pw.Border.all(color: PdfColors.grey300, width: 1),
+                  // Totals Row
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          // Header
-                          pw.Container(
-                            width: double.infinity,
-                            padding: const pw.EdgeInsets.all(8),
-                            decoration: const pw.BoxDecoration(
-                              color: PdfColors.red50,
-                            ),
-                            child: pw.Text(
-                              'CASH OUT FLOW (EXPENSE)',
-                              style: pw.TextStyle(
-                                fontSize: 12,
-                                fontWeight: pw.FontWeight.bold,
-                                color: PdfColors.red900,
-                              ),
-                              textAlign: pw.TextAlign.center,
-                            ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Total Cash In',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
                           ),
-                          // Header Row
-                          _buildTwoColumnRow(
-                            category: 'Category',
-                            amount: 'Amount',
-                            isHeader: true,
-                          ),
-                          // Cash Out Data Rows
-                          ...cashOutData.entries.map((entry) {
-                            final value = _formatNumberForPdf(entry.value);
-                            return _buildTwoColumnRow(
-                              category: entry.key,
-                              amount: value,
-                            );
-                          }),
-                          // Cash Out Total
-                          pw.Container(
-                            width: double.infinity,
-                            padding: const pw.EdgeInsets.all(8),
-                            decoration: const pw.BoxDecoration(
-                              color: PdfColors.red50,
-                              border: pw.Border(
-                                top: pw.BorderSide(color: PdfColors.grey300, width: 1),
-                              ),
-                            ),
-                            child: pw.Row(
-                              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                              children: [
-                                pw.Text(
-                                  'Total Cash Out',
-                                  style: pw.TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: pw.FontWeight.bold,
-                                    color: PdfColors.red900,
-                                  ),
-                                ),
-                                pw.Text(
-                                  _formatNumberForPdf(totalCashOut.toString()),
-                                  style: pw.TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: pw.FontWeight.bold,
-                                    color: PdfColors.red900,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumberForPdf(totalCashIn.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          'Total Cash Out',
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          _formatNumberForPdf(totalCashOut.toString()),
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
               
               pw.SizedBox(height: 20),
               
-              // Net Earning Summary
+              // Separate Net Earning Section
               pw.Container(
-                width: double.infinity,
-                padding: const pw.EdgeInsets.all(12),
+                padding: const pw.EdgeInsets.all(10),
                 decoration: pw.BoxDecoration(
-                  color: PdfColors.orange50,
-                  border: pw.Border.all(color: PdfColors.orange300, width: 1),
+                  border: pw.Border.all(),
                 ),
                 child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -216,17 +201,15 @@ class NetEarningPdfView {
                     pw.Text(
                       'NET EARNING',
                       style: pw.TextStyle(
-                        fontSize: 14,
                         fontWeight: pw.FontWeight.bold,
-                        color: PdfColors.orange900,
+                        fontSize: 14,
                       ),
                     ),
                     pw.Text(
                       _formatNumberForPdf(netEarning.toString()),
                       style: pw.TextStyle(
-                        fontSize: 14,
                         fontWeight: pw.FontWeight.bold,
-                        color: PdfColors.orange900,
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -243,58 +226,85 @@ class NetEarningPdfView {
     );
   }
 
-  static pw.Widget _buildTwoColumnRow({
-    required String category,
-    required String amount,
-    bool isHeader = false,
-  }) {
-    return pw.Container(
-      decoration: pw.BoxDecoration(
-        border: pw.Border(
-          top: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
-        ),
-      ),
-      child: pw.Row(
+  // Helper function to build cash in and cash out rows with numbering
+  static List<pw.TableRow> _buildCashInAndOutRowsWithNumbers(Map<String, String> cashInData, Map<String, String> cashOutData) {
+    final maxRows = cashInData.length > cashOutData.length ? cashInData.length : cashOutData.length;
+    final List<pw.TableRow> result = [];
+    
+    final cashInEntries = cashInData.entries.toList();
+    final cashOutEntries = cashOutData.entries.toList();
+    
+    for (int i = 0; i < maxRows; i++) {
+      String cashInNumber = i < cashInData.length ? "${i + 1}" : "";
+      String cashInLabel = '';
+      String cashInAmount = '';
+      String cashOutNumber = i < cashOutData.length ? "${i + 1}" : "";
+      String cashOutLabel = '';
+      String cashOutAmount = '';
+      
+      if (i < cashInEntries.length) {
+        cashInLabel = cashInEntries[i].key;
+        cashInAmount = _formatNumberForPdf(cashInEntries[i].value);
+      }
+      
+      if (i < cashOutEntries.length) {
+        cashOutLabel = cashOutEntries[i].key;
+        cashOutAmount = _formatNumberForPdf(cashOutEntries[i].value);
+      }
+      
+      result.add(pw.TableRow(
         children: [
-          pw.Expanded(
-            flex: 2,
-            child: pw.Container(
-              padding: const pw.EdgeInsets.all(6),
-              decoration: pw.BoxDecoration(
-                border: pw.Border(
-                  right: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
-                ),
-              ),
-              child: pw.Text(
-                category,
-                style: pw.TextStyle(
-                  fontSize: isHeader ? 10 : 9,
-                  fontWeight: isHeader 
-                      ? pw.FontWeight.bold 
-                      : pw.FontWeight.normal,
-                ),
-              ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInNumber,
+              textAlign: pw.TextAlign.center,
+              style: const pw.TextStyle(fontSize: 10),
             ),
           ),
-          pw.Expanded(
-            flex: 1,
-            child: pw.Container(
-              padding: const pw.EdgeInsets.all(6),
-              child: pw.Text(
-                amount,
-                textAlign: pw.TextAlign.right,
-                style: pw.TextStyle(
-                  fontSize: isHeader ? 10 : 9,
-                  fontWeight: isHeader 
-                      ? pw.FontWeight.bold 
-                      : pw.FontWeight.normal,
-                ),
-              ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInLabel,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInAmount,
+              textAlign: pw.TextAlign.right,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutNumber,
+              textAlign: pw.TextAlign.center,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutLabel,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutAmount,
+              textAlign: pw.TextAlign.right,
+              style: const pw.TextStyle(fontSize: 10),
             ),
           ),
         ],
-      ),
-    );
+      ));
+    }
+    
+    return result;
   }
 
   static String _formatNumberForPdf(String value) {
@@ -326,13 +336,13 @@ class NetEarningPdfView {
       final others = prefs.getString('others') ?? '';
 
       // Load dynamic fields
-      final dynamicFieldsJson = prefs.getStringList('dynamic_fields') ?? [];
-      Map<String, String> dynamicFields = {};
-      for (String fieldJson in dynamicFieldsJson) {
+      final dynamicCashInFieldsJson = prefs.getStringList('dynamic_cash_in_fields') ?? [];
+      Map<String, String> dynamicCashInFields = {};
+      for (String fieldJson in dynamicCashInFieldsJson) {
         final parts = fieldJson.split('|');
         if (parts.length >= 2) {
           final label = parts[0];
-          dynamicFields[label] = prefs.getString('dynamic_field_$label') ?? '';
+          dynamicCashInFields[label] = prefs.getString('dynamic_cash_in_field_$label') ?? '';
         }
       }
 
@@ -351,8 +361,8 @@ class NetEarningPdfView {
       totalCashIn += double.tryParse(fruitsSale) ?? 0.0;
       totalCashIn += double.tryParse(others) ?? 0.0;
       
-      // Add dynamic fields to total
-      for (final value in dynamicFields.values) {
+      // Add dynamic cash in fields to total
+      for (final value in dynamicCashInFields.values) {
         totalCashIn += double.tryParse(value) ?? 0.0;
       }
 
@@ -378,6 +388,17 @@ class NetEarningPdfView {
       final garbageBill = prefs.getString('expense_garbage_bill') ?? '';
       final othersExpense = prefs.getString('expense_others') ?? '';
 
+      // Load dynamic fields
+      final dynamicCashOutFieldsJson = prefs.getStringList('dynamic_cash_out_fields') ?? [];
+      Map<String, String> dynamicCashOutFields = {};
+      for (String fieldJson in dynamicCashOutFieldsJson) {
+        final parts = fieldJson.split('|');
+        if (parts.length >= 2) {
+          final label = parts[0];
+          dynamicCashOutFields[label] = prefs.getString('dynamic_cash_out_field_$label') ?? '';
+        }
+      }
+
       // Calculate Cash Out Total
       double totalCashOut = 0.0;
       totalCashOut += double.tryParse(food) ?? 0.0;
@@ -401,6 +422,11 @@ class NetEarningPdfView {
       totalCashOut += double.tryParse(garbageBill) ?? 0.0;
       totalCashOut += double.tryParse(othersExpense) ?? 0.0;
 
+      // Add dynamic cash out fields to total
+      for (final value in dynamicCashOutFields.values) {
+        totalCashOut += double.tryParse(value) ?? 0.0;
+      }
+
       // Calculate Net Earning
       final netEarning = totalCashIn - totalCashOut;
 
@@ -418,7 +444,7 @@ class NetEarningPdfView {
           'Trees/Plants Sale': treesPlantsSale,
           'Fruits Sale': fruitsSale,
           'Others': others,
-          ...dynamicFields,
+          ...dynamicCashInFields,
         },
         'cashOutData': {
           'Food Expense': food,
@@ -441,6 +467,7 @@ class NetEarningPdfView {
           'Service Charge': serviceCharge,
           'Garbage Bill': garbageBill,
           'Others': othersExpense,
+          ...dynamicCashOutFields,
         },
         'totalCashIn': totalCashIn,
         'totalCashOut': totalCashOut,
