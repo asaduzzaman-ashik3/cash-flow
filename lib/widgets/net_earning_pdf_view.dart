@@ -48,6 +48,17 @@ class NetEarningPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
                           'CASH IN FLOW (EARN)',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
@@ -60,6 +71,17 @@ class NetEarningPdfView {
                         child: pw.Text(
                           'Amount',
                           textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
@@ -99,6 +121,17 @@ class NetEarningPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
                           'Total Cash In',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
@@ -111,6 +144,17 @@ class NetEarningPdfView {
                         child: pw.Text(
                           _formatNumberForPdf(totalCashIn.toString()),
                           textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
                             fontSize: 12,
@@ -147,6 +191,17 @@ class NetEarningPdfView {
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
                           'Net Earning',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
@@ -164,6 +219,10 @@ class NetEarningPdfView {
                             fontSize: 12,
                           ),
                         ),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(''),
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
@@ -197,23 +256,33 @@ class NetEarningPdfView {
     final cashOutEntries = cashOutData.entries.toList();
     
     for (int i = 0; i < maxRows; i++) {
+      String cashInNumber = i < cashInData.length ? "${i + 1}" : "";
       String cashInLabel = '';
       String cashInAmount = '';
+      String cashOutNumber = i < cashOutData.length ? "${i + 1}" : "";
       String cashOutLabel = '';
       String cashOutAmount = '';
       
       if (i < cashInEntries.length) {
-        cashInLabel = "${i + 1}. ${cashInEntries[i].key}";
+        cashInLabel = cashInEntries[i].key;
         cashInAmount = _formatNumberForPdf(cashInEntries[i].value);
       }
       
       if (i < cashOutEntries.length) {
-        cashOutLabel = "${i + 1}. ${cashOutEntries[i].key}";
+        cashOutLabel = cashOutEntries[i].key;
         cashOutAmount = _formatNumberForPdf(cashOutEntries[i].value);
       }
       
       result.add(pw.TableRow(
         children: [
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashInNumber,
+              textAlign: pw.TextAlign.center,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
           pw.Padding(
             padding: const pw.EdgeInsets.all(8),
             child: pw.Text(
@@ -226,6 +295,14 @@ class NetEarningPdfView {
             child: pw.Text(
               cashInAmount,
               textAlign: pw.TextAlign.right,
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8),
+            child: pw.Text(
+              cashOutNumber,
+              textAlign: pw.TextAlign.center,
               style: const pw.TextStyle(fontSize: 10),
             ),
           ),
