@@ -28,20 +28,28 @@ class CashInPdfView {
               pw.SizedBox(height: 10),
               pw.Text(
                 'Generated on: ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.now())}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.black),
+                style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(height: 20),
               
               // Table
               pw.Table(
-                border: pw.TableBorder.all(color: PdfColors.black),
+                border: pw.TableBorder.all(),
                 children: [
                   // Header Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(
-
-                    ),
                     children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '#',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
@@ -69,8 +77,17 @@ class CashInPdfView {
                   // Data Rows
                   ...cashInData.entries.map((entry) {
                     final value = _formatNumberForPdf(entry.value);
+                    int index = cashInData.keys.toList().indexOf(entry.key) + 1;
                     return pw.TableRow(
                       children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8),
+                          child: pw.Text(
+                            index.toString(),
+                            textAlign: pw.TextAlign.center,
+                            style: const pw.TextStyle(fontSize: 10),
+                          ),
+                        ),
                         pw.Padding(
                           padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
@@ -91,12 +108,22 @@ class CashInPdfView {
                         ),
                       ],
                     );
-                  }),
+                  }).toList(),
                   
                   // Total Row
                   pw.TableRow(
-                    decoration: const pw.BoxDecoration(),
                     children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                          '',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(
