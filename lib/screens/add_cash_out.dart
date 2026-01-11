@@ -535,15 +535,6 @@ class _AddCashOutState extends State<AddCashOut> {
               
               // Dynamic fields section
               if (_dynamicLabels.isNotEmpty) ...[
-                const Divider(height: 30),
-                const Text(
-                  'Dynamic Fields',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
                 ...List.generate(_dynamicLabels.length, (index) => _buildDynamicField(index)),
               ],
               
