@@ -90,8 +90,8 @@ class NetEarningPdfView {
                     ],
                   ),
                   
-                  // Data Rows
-                  ..._buildCashInAndOutRows(cashInData, cashOutData),
+                  // Data Rows with numbering
+                  ..._buildCashInAndOutRowsWithNumbers(cashInData, cashOutData),
                   
                   // Totals Row
                   pw.TableRow(
@@ -188,8 +188,8 @@ class NetEarningPdfView {
     );
   }
 
-  // Helper function to build cash in and cash out rows
-  static List<pw.TableRow> _buildCashInAndOutRows(Map<String, String> cashInData, Map<String, String> cashOutData) {
+  // Helper function to build cash in and cash out rows with numbering
+  static List<pw.TableRow> _buildCashInAndOutRowsWithNumbers(Map<String, String> cashInData, Map<String, String> cashOutData) {
     final maxRows = cashInData.length > cashOutData.length ? cashInData.length : cashOutData.length;
     final List<pw.TableRow> result = [];
     
@@ -203,12 +203,12 @@ class NetEarningPdfView {
       String cashOutAmount = '';
       
       if (i < cashInEntries.length) {
-        cashInLabel = cashInEntries[i].key;
+        cashInLabel = "${i + 1}. ${cashInEntries[i].key}";
         cashInAmount = _formatNumberForPdf(cashInEntries[i].value);
       }
       
       if (i < cashOutEntries.length) {
-        cashOutLabel = cashOutEntries[i].key;
+        cashOutLabel = "${i + 1}. ${cashOutEntries[i].key}";
         cashOutAmount = _formatNumberForPdf(cashOutEntries[i].value);
       }
       
