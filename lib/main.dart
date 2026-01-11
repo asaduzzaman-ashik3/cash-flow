@@ -641,61 +641,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.cyan,
                   icon: Icons.payments_outlined,
                 ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.teal,
-                          foregroundColor: Colors.white,
-                        ),
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddCashIn(),
-                            ),
-                          );
-                          _loadAllTotals();
-                        },
-                        child: Center(
-                          child: Row(
-                            spacing: 3,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Icon(Icons.add), Text("Add Cash In")],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrangeAccent,
-                          foregroundColor: Colors.white,
-                        ),
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddCashOut(),
-                            ),
-                          );
-                          _loadAllTotals();
-                        },
-                        child: Center(
-                          child: Row(
-                            spacing: 3,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Icon(Icons.add), Text("Add Cash Out")],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
