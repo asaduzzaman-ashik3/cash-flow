@@ -91,7 +91,7 @@ class CashInPdfView {
                         ),
                       ],
                     );
-                  }).toList(),
+                  }),
                   
                   // Total Row
                   pw.TableRow(
